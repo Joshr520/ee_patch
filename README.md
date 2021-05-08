@@ -7,4 +7,4 @@ To compile the patch on your own: Go to steam -> library -> at the top left unde
 
 To edit the patch, follow this video - https://youtu.be/vFr9DFstF9w - to setup Sublime Text for coding.
 
-To view function documentation, find you Black Ops III root directory, locate the docs_modtools folder, open bo3_scriptapifunctions.htm. This includes many functions you can use to edit game mechanics.
+To view function documentation, find your Black Ops III root directory, locate the docs_modtools folder, open bo3_scriptapifunctions.htm. This includes many functions you can use to edit game mechanics.
