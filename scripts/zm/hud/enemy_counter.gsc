@@ -42,7 +42,7 @@ function count_archetypes()
 		level.enemy_count_total = count["zombie"] + level.zombie_total;
 		foreach(index, enemy in count)
 		{
-			if(count[index] = 0) level.enemy_count_current[index] = 0;
+			if(count[index] == 0) level.enemy_count_current[index] = 0;
 		}
 		count = undefined;
 		wait 0.1;
