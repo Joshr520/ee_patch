@@ -1,4 +1,9 @@
 # ee-patch
+
+# WARNING
+
+This patch is currently a work in progress, and does not have any official release yet. You can download and use the patch, but nothing is guaranteed to be setup correctly and not everything is expected to work yet.
+
 # Patch Information
 
 A patch for Black Ops 3 Zombies that modifies many aspects of the game, such as rng for easter eggs and hud elements
