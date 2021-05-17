@@ -7,9 +7,23 @@
 #define FONT "default"
 #define FONTSCALE 1.3
 #define T_X -15
-#define X_INCREMENT -5
+#define X_INCREMENT -2
 #define T_Y 20
 #define Y_INCREMENT 15
 #define COLOR_TOTAL RED
 #define COLOR_CURRENT GREEN
 #define TEXT ""
+
+#define ARCHETYPE_ZOMBIE				"zombie"
+#define ARCHETYPE_ZOMBIE_DOG			"zombie_dog"
+#define ARCHETYPE_PARASITE				"parasite"
+#define ARCHETYPE_RAPS					"raps"
+#define ARCHETYPE_SPIDER				"spider"
+#define ARCHETYPE_SENTINEL_DRONE		"sentinel_drone"
+#define ARCHETYPE_THRASHER				"thrasher"
+#define ARCHETYPE_RAZ					"raz"
+#define ARCHETYPE_MONKEY				"monkey"
+#define ARCHETYPE_MARGWA				"margwa"
+#define ARCHETYPE_MECHZ					"mechz"
+
+#define ARCHETYPES_ALL array(ARCHETYPE_ZOMBIE,ARCHETYPE_ZOMBIE_DOG,ARCHETYPE_MARGWA,ARCHETYPE_MECHZ,ARCHETYPE_THRASHER,ARCHETYPE_RAZ,ARCHETYPE_MONKEY,ARCHETYPE_RAPS,ARCHETYPE_PARASITE,ARCHETYPE_SENTINEL_DRONE,ARCHETYPE_SPIDER)

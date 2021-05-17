@@ -59,7 +59,7 @@
 #using scripts\zm\hud\enemy_counter;
 #using scripts\zm\hud\zombie_timer;
 
-//#using scripts\zm\hud\player_healthbar;
+#using scripts\zm\hud\player_healthbar;
 
 //#using scripts\zm\hud\bot_testing;
 
@@ -70,7 +70,7 @@
 
 function start()
 {
-	//thread player_healthbar::init();
+	thread player_healthbar::init();
 	//thread bot_testing::bot();
 	//thread debug();
 	//thread zone_monitor_name();
