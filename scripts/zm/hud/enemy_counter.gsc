@@ -85,7 +85,7 @@ function make_counters()
 			index++;
 		}
 		level.counters[index] = NewHudElem();
-		level.counters[index] hud_common::reset_hud(0,ALIGNX,ALIGNY,HORZALIGN,VERTALIGN,FOREGROUND,HIDEINMENU,T_X + X_INCREMENT,T_Y,FONT,FONTSCALE,COLOR_CURRENT,TEXT);
+		//level.counters[index] hud_common::reset_hud(0,ALIGNX,ALIGNY,HORZALIGN,VERTALIGN,FOREGROUND,HIDEINMENU,T_X + X_INCREMENT,T_Y,FONT,FONTSCALE,COLOR_CURRENT,TEXT);
 		level.counters[index] thread hud_common::main(0,"",&counter_flag_display,&counter_flag_destroy,"","",0,0);
 		level.counters[index] thread lifetime_current(archetype);
 	}
@@ -104,10 +104,8 @@ function monitor_counter_positions()
 			if(level.enemy_count[archetype] != 0)
 			{
 				c_active++;
-				level.counters[index] hud_common::reset_hud(0,ALIGNX,ALIGNY,HORZALIGN,VERTALIGN,FOREGROUND,HIDEINMENU,T_X + X_INCREMENT,T_Y + (Y_INCREMENT * c_active),FONT,FONTSCALE,COLOR_CURRENT,TEXT);;
+				level.counters[index] thread hud_common::reset_hud(0,ALIGNX,ALIGNY,HORZALIGN,VERTALIGN,FOREGROUND,HIDEINMENU,T_X + X_INCREMENT,T_Y + (Y_INCREMENT * c_active),FONT,FONTSCALE,COLOR_CURRENT,TEXT);
 				//level.counters[index].y = T_Y + (Y_INCREMENT * c_active);
-				IPrintLnBold(level.counters[index].y);
-				IPrintLnBold(level.counters[0].y);
 			}
 		}
 		wait 0.1;
