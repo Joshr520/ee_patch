@@ -3,6 +3,7 @@
 #using scripts\shared\flag_shared;
 #using scripts\zm\array_override\array_override_common;
 #using scripts\zm\_zm_zonemgr;
+#using scripts\shared\ai\zombie_utility;
 
 #insert scripts\zm\array_override\array_override_common.gsh;
 
@@ -39,11 +40,14 @@
 #define N_RND_INDEX 2
 #define FUNC_INDEX 3
 
-#define SOLO_CASTLE_SPAWN_0 array(ENTRY_HALL_BACK,3,2,array())
-#define SOLO_CASTLE_SPAWN_1 array(ENTRY_LCOURTYARD,3,3,array())
-#define SOLO_CASTLE_SPAWN_2 array(ENTRY_LEFT_UNDERCROFT,3,4,array())
-#define SOLO_CASTLE_SPAWN_3 array(ENTRY_VOID,2,5,array())
-#define SOLO_CASTLE_SPAWN_4 array(ENTRY_VOID,8,5,array())
+#define SOLO_CASTLE_SPAWN_0 array(ENTRY_HALL_BACK,4,2,array())
+#define SOLO_CASTLE_SPAWN_1 array(ENTRY_LCOURTYARD,4,3,array())
+#define SOLO_CASTLE_SPAWN_2 array(ENTRY_LEFT_UNDERCROFT,4,4,array())
+#define SOLO_CASTLE_SPAWN_3 array(ENTRY_ROCKET,6,6,array())
+#define SOLO_CASTLE_SPAWN_4 array(ENTRY_GATEHOUSE,6,6,array())
+#define SOLO_CASTLE_SPAWN_5 array(ENTRY_CLOCKTOWER,6,6,array())
+#define SOLO_CASTLE_SPAWN_6 array(ENTRY_LEFT_UNDERCROFT,10,7,array())
+#define SOLO_CASTLE_SPAWN_7 array(ENTRY_RIGHT_UNDERCROFT,10,7,array())
 
 #define DUO_CASTLE_SPAWN_0 array(ENTRY_LCOURTYARD,3,2,array())
 #define DUO_CASTLE_SPAWN_1 array(ENTRY_LCOURTYARD,3,3,array())
@@ -58,10 +62,10 @@
 #define DUO_CASTLE_SPAWN_10 array(ENTRY_RIGHT_UNDERCROFT,10,7,array())
 #define DUO_CASTLE_SPAWN_11 array(ENTRY_VOID,6,8,array())
 
-#define SOLO_ZOD_SPAWN_0 array(ENTRY_RIFT_LEFT,6,3,array())
-#define SOLO_ZOD_SPAWN_1 array(ENTRY_FOOTLIGHT_BOTTOM,4,4,array())
-#define SOLO_ZOD_SPAWN_2 array(ENTRY_FOOTLIGHT_MIDDLE,4,4,array())
-#define SOLO_ZOD_SPAWN_3 array(ENTRY_WATRERFRONT_EGG,8,5,array())
+#define SOLO_ZOD_SPAWN_0 array(ENTRY_RIFT_LEFT,10,3,array())
+#define SOLO_ZOD_SPAWN_1 array(ENTRY_FOOTLIGHT_BOTTOM,6,4,array())
+#define SOLO_ZOD_SPAWN_2 array(ENTRY_FOOTLIGHT_MIDDLE,6,4,array())
+#define SOLO_ZOD_SPAWN_3 array(ENTRY_WATRERFRONT_EGG,10,5,array())
 #define SOLO_ZOD_SPAWN_4 array(ENTRY_JUNCTION_LAUNDRY,2,5,array())
 
 #define STALINGRAD_SPAWN_1 array(ENTRY_ARMORY_TO_DC,1,1,array())
@@ -73,7 +77,7 @@
 #define DUO_ZOD_FIXED_SPAWNS array()
 #define STALINGRAD_FIXED_SPAWNS array(STALINGRAD_SPAWN_1,STALINGRAD_SPAWN_2,STALINGRAD_SPAWN_3,STALINGRAD_SPAWN_4)
 #define FACTORY_FIXED_SPAWNS array()
-#define SOLO_CASTLE_FIXED_SPAWNS array(SOLO_CASTLE_SPAWN_0,SOLO_CASTLE_SPAWN_1,SOLO_CASTLE_SPAWN_2,SOLO_CASTLE_SPAWN_3,SOLO_CASTLE_SPAWN_4)
+#define SOLO_CASTLE_FIXED_SPAWNS array(SOLO_CASTLE_SPAWN_0,SOLO_CASTLE_SPAWN_1,SOLO_CASTLE_SPAWN_2,SOLO_CASTLE_SPAWN_3,SOLO_CASTLE_SPAWN_4,SOLO_CASTLE_SPAWN_5,SOLO_CASTLE_SPAWN_6,SOLO_CASTLE_SPAWN_7)
 #define DUO_CASTLE_FIXED_SPAWNS array(DUO_CASTLE_SPAWN_0,DUO_CASTLE_SPAWN_1,DUO_CASTLE_SPAWN_2,DUO_CASTLE_SPAWN_3,DUO_CASTLE_SPAWN_4,DUO_CASTLE_SPAWN_5,DUO_CASTLE_SPAWN_6,DUO_CASTLE_SPAWN_7,DUO_CASTLE_SPAWN_8,DUO_CASTLE_SPAWN_9,DUO_CASTLE_SPAWN_10,DUO_CASTLE_SPAWN_11)
 
 #define SYSTEM_NAME "fixed_z_spawns"
@@ -81,12 +85,15 @@ function init()
 {
 	REGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOM,&random_override);
 	thread main();
+	thread fixed_zombie_speed();
 }
 
 function random_override(array)
 {
 	if (IsInArray(level.zm_loc_types["zombie_location"],array[0]) && level.available_spawn_requests.size)
 	{
+		if(!isdefined(level.zombie_force_run)) level.zombie_force_run = 0;
+		else level.zombie_force_run++;
 		spawns = ArrayCopy(level.available_spawn_requests);
 		for (i = level.available_spawn_requests.size; i > 0; i--)
 		{
@@ -101,22 +108,19 @@ function random_override(array)
 					if (![[f.func]](f.arg))
 					{
 						should_spawn = 0;
-						break;
+						if(array.size > 0)
+						{
+							keys = GetArrayKeys(array);
+							desired = array[keys[RandomInt(keys.size)]];
+							if (isdefined(desired)) return desired;
+						}
 					}
 				}
 				if (should_spawn)
 				{
 					desired = [[level.next_fixed_spawn_loc_func]](array,fixed_spawn.ref_point);
 					level notify("fixed_zombie_spawn",fixed_spawn.n_index);
-					if (isdefined(desired))
-					{
-						if (self.zombie_move_speed != "super_sprint")
-						{
-							if (level.zombie_move_speed > 1) self.zombie_move_speed = "run";
-							if (level.zombie_move_speed > 36) self.zombie_move_speed = "sprint";
-						}
-						return desired;
-					}
+					if (isdefined(desired)) return desired;
 				}
 			}
 		}
@@ -267,4 +271,61 @@ function get_zone_from_vector_function(vector_function)
 {
 	vec = [[vector_function]]();
 	return get_zone_from_ref_point(vec);
+}
+
+function fixed_zombie_speed()
+{
+	while(1)
+	{
+		enemies = GetAISpeciesArray(level.zombie_team, "all");
+		last = 0;
+
+		foreach(enemy in enemies)
+		{
+			if (!(enemy.ignore_enemy_count) && enemy.archetype == "zombie")
+			{
+				if(level.zombie_move_speed > 1 && isdefined(enemy.zombie_move_speed_override) && zombie_utility::get_current_zombie_count() + level.zombie_total <= 3)
+				{
+					switch(GetDvarString("mapname"))
+					{
+						case "zm_zod":
+							while(!zombie_utility::get_current_zombie_count() + level.zombie_total <= 1) wait 0.1;
+							if(IsAlive(enemy))
+							{
+								enemy zombie_utility::set_zombie_run_cycle_restore_from_override();
+								enemy zombie_utility::set_zombie_run_cycle("sprint");
+							}
+						case "zm_castle":
+						case "zm_stalingrad":
+							if(level.round_number > 3)
+							{
+								if(IsAlive(enemy))
+								{
+									enemy zombie_utility::set_zombie_run_cycle_restore_from_override();
+									enemy zombie_utility::set_zombie_run_cycle("run");
+									enemy thread monitor_single_zombie_speed();
+									last = 1;
+								}
+							}
+					}
+				}
+				else if (!isdefined(enemy.zombie_move_speed_override) && enemy.zombie_move_speed != "super_sprint")
+				{
+					if (level.zombie_move_speed > 1) if(IsAlive(enemy)) enemy zombie_utility::set_zombie_run_cycle_override_value("run");
+					if (level.zombie_move_speed > 36) if(IsAlive(enemy)) enemy zombie_utility::set_zombie_run_cycle_override_value("sprint");
+				}
+			}
+		}
+
+		if(last) level waittill("between_round_over");
+
+		wait 0.05;
+	}
+}
+
+function monitor_single_zombie_speed()
+{
+	while(!zombie_utility::get_current_zombie_count() + level.zombie_total <= 1) wait 0.1;
+	if(IsAlive(self)) self zombie_utility::set_zombie_run_cycle("sprint");
+	return;
 }
