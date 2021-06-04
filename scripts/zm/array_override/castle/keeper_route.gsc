@@ -52,6 +52,8 @@ function randomize_override(array)
 
 function main()
 {
+	level flag::wait_till("initial_blackscreen_passed");
+	
 	level.keeper_route_done = 0;
 
 	if (GetPlayers().size != 2)	level.fixed_keeper_route = KEEPER_PATH_ORDER_0;

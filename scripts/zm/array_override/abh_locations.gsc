@@ -27,8 +27,8 @@
 "zone_subway_pap_ritual"- pap room by ritual table
 */
 
-#define ZOD_P0_ABH_ZONES_C array("zone_slums_junction","zone_subway_central","zone_start","zone_theater_high_A","zone_slums_D","zone_start","zone_canal_junction","zone_theater_high_A","zone_subway_central")
-#define ZOD_P0_ABH_ZONES_M array("zone_slums_junction","zone_subway_central","zone_start","zone_theater_high_A","zone_slums_D","zone_start","zone_canal_junction","zone_theater_high_A","zone_subway_central")
+#define ZOD_P0_ABH_ZONES_C array("zone_slums_junction","zone_subway_central","zone_start","zone_theater_high_A","zone_slums_D","zone_start","zone_theater_high_A","zone_subway_central")
+#define ZOD_P0_ABH_ZONES_M array("zone_slums_junction","zone_subway_central","zone_start","zone_theater_high_A","zone_slums_D","zone_start","zone_theater_high_A","zone_subway_central")
 
 #define ZOD_P1_ABH_ZONES_C array()
 #define ZOD_P1_ABH_ZONES_M array()
@@ -63,8 +63,8 @@
 "zone_v10_pad_door"				- outside rocket test
 */
 
-#define CASTLE_P0_ABH_ZONES_C array("zone_gatehouse","zone_undercroft","zone_v10_pad","zone_rooftop","zone_v10_pad")
-#define CASTLE_P0_ABH_ZONES_M array("zone_gatehouse","zone_undercroft","zone_v10_pad","zone_rooftop","zone_v10_pad")
+#define CASTLE_P0_ABH_ZONES_C array("zone_rooftop","zone_undercroft","zone_gatehouse","zone_undercroft","zone_rooftop","zone_clocktower")
+#define CASTLE_P0_ABH_ZONES_M array("zone_rooftop","zone_undercroft","zone_gatehouse","zone_undercroft","zone_rooftop","zone_clocktower")
 
 #define CASTLE_P1_ABH_ZONES_C array("zone_v10_pad","zone_tram_to_subclocktower","zone_tram_to_subclocktower")
 #define CASTLE_P1_ABH_ZONES_M array("zone_v10_pad","zone_tram_to_subclocktower","zone_tram_to_subclocktower")
@@ -117,6 +117,8 @@ function random_override(array)
 	{
 		if (array[0].targetname == "player_respawn_point")
 		{
+			if(self IsSwitchingWeapons()) self waittill("weapon_change_complete", weapon);
+
 			pl = ArraySort(level.activeplayers, self.origin, 1)[0];
 
 			id = pl bgb_common::get_lobby_index();

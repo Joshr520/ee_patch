@@ -1,7 +1,9 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
+#using scripts\shared\rank_shared;
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_zonemgr;
+#using scripts\shared\clientfield_shared;
 
 //custom scripts
 
@@ -10,6 +12,8 @@
 #using scripts\zm\array_override\bgb_cycle;
 #using scripts\zm\array_override\fixed_ai_spawns;
 #using scripts\zm\array_override\fixed_margwa_spawns;
+#using scripts\zm\array_override\initial_spawn_points;
+#using scripts\zm\array_override\fixed_specific_powerups;
 
 #using scripts\zm\array_override\zod\zod_craftable_locations;
 #using scripts\zm\array_override\zod\starting_pods;
@@ -19,6 +23,7 @@
 #using scripts\zm\array_override\castle\void_symbols;
 #using scripts\zm\array_override\castle\rune_prison_fireplace;
 #using scripts\zm\array_override\castle\castle_tram_powerup;
+#using scripts\zm\array_override\castle\boss_mechz_spawn_point;
 
 #using scripts\zm\array_override\island\fixed_island_challenges;
 #using scripts\zm\array_override\island\skull_pedastals;
@@ -55,11 +60,10 @@
 #using scripts\zm\variable_override\stalingrad_overrides;
 #using scripts\zm\variable_override\island_overrides;
 
-//#using scripts\zm\hud\zombie_counter;
-#using scripts\zm\hud\enemy_counter;
+#using scripts\zm\hud\zombie_counter;
+//#using scripts\zm\hud\enemy_counter;
 #using scripts\zm\hud\zombie_timer;
-
-#using scripts\zm\hud\player_healthbar;
+#using scripts\zm\hud\rocket_test_timer;
 
 //#using scripts\zm\hud\bot_testing;
 
@@ -70,15 +74,15 @@
 
 function start()
 {
-	thread player_healthbar::init();
 	//thread bot_testing::bot();
-	thread debug();
+	//thread debug();
 	//thread zone_monitor_name();
 	//thread zone_monitor_origin();
 
 	thread array_override();
 	thread script_override();
 	thread variable_override();
+	//thread custom_spawn_detection();
 }
 
 function array_override()
@@ -90,6 +94,9 @@ function array_override()
 
 	fixed_ai_spawns::init();
 	fixed_margwa_spawns::init();
+	
+	initial_spawn_points::init();
+	fixed_specific_powerups::init();
 
 	// ZOD
 	zod_starting_pods::init();
@@ -101,6 +108,7 @@ function array_override()
 	void_symbols::init();
 	castle_tram_powerup::init();
 	rune_prison_fireplace::init();
+	boss_mechz_spawn_point::init();
 
 	// ISLAND
 	fixed_island_challenges::init();
@@ -134,6 +142,7 @@ function script_override()
 	craftable_locations::init();
 
 	// free first bgb even offline
+	IPrintLnBold(GetTime());
 	SetDvar("scr_firstGumFree",1);
 	SetDvar("zm_private_rankedmatch",1);
 
@@ -202,9 +211,10 @@ function show_custom_hud_elements()
 {
 	host = GetPlayers()[0];
 
-	//thread zombie_counter::init();
-	thread enemy_counter::init();
+	thread zombie_counter::init();
+	//thread enemy_counter::init();
 	thread zombie_timer::init();
+	thread rocket_test_timer::main();
 }
 
 function zone_monitor_name()
@@ -224,7 +234,7 @@ function zone_monitor_origin()
 	{
 		org = GetPlayers()[0].origin;
 		str = "( " + org[0] + " , " + org[1] + " , " + org[2] + " )";
-		IPrintLnBold(str);
+		IPrintLn(str);
 		wait 2.5;
 	}
 }
@@ -232,4 +242,70 @@ function zone_monitor_origin()
 function debug()
 {
 	level.player_starting_points = 50000;
+	/*while(1)
+	{
+		wait 1;
+		IPrintLnBold("Setting 152");
+		level clientfield::increment("gameplay_started", 152);
+		IPrintLnBold(level clientfield::get("gameplay_started"));
+		wait 3;
+		IPrintLnBold("Setting 52345");
+		level clientfield::set("gameplay_started", 52345);
+		IPrintLnBold(level clientfield::get("gameplay_started"));
+		wait 3;
+		IPrintLnBold("Setting 1527");
+		level clientfield::set("gameplay_started", 1527);
+		IPrintLnBold(level clientfield::get("gameplay_started"));
+		wait 3;
+		IPrintLnBold("Setting 629");
+		level clientfield::set("gameplay_started", 629);
+		IPrintLnBold(level clientfield::get("gameplay_started"));
+		wait 2;
+	}*/
+}
+
+function custom_spawn_detection()
+{
+	while(1)
+	{
+		spawn_locs = level.zm_loc_types["zombie_location"];
+		if(!isdefined(level.n_player_spawn_selection_index))
+		{
+			level.n_player_spawn_selection_index = 0;
+		}
+		players = GetPlayers();
+		level.n_player_spawn_selection_index++;
+		if(level.n_player_spawn_selection_index >= players.size)
+		{
+			level.n_player_spawn_selection_index = 0;
+		}
+		curr_player = players[level.n_player_spawn_selection_index];
+		ArraySortClosest(spawn_locs, curr_player.origin);
+		spawn_candidates = [];
+		player_angles = AnglesToForward(curr_player.angles);
+		for(i = 0; i < spawn_locs.size; i++)
+		{
+			distance = spawn_locs[i].origin - curr_player.origin;
+			dot_product = VectorDot(player_angles, distance);
+			if(dot_product >= 0)
+			{
+				spawn_candidates[spawn_candidates.size] = spawn_locs[i];
+				if(spawn_candidates.size > 10)
+				{
+					break;
+				}
+			}
+		}
+		if(spawn_candidates.size == 1)
+		{
+			// DEBUG
+			foreach(spawn_loc in spawn_candidates)
+			{
+				IPrintLnBold("( " + spawn_loc.origin[0] + " , " + spawn_loc.origin[1] + " , " + spawn_loc.origin[2] + " )");
+				wait 0.5;
+			}
+			// DEBUG
+		}
+		wait 0.1;
+	}
 }

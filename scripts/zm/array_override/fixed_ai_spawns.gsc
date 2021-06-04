@@ -108,12 +108,7 @@ function random_override(array)
 					if (![[f.func]](f.arg))
 					{
 						should_spawn = 0;
-						if(array.size > 0)
-						{
-							keys = GetArrayKeys(array);
-							desired = array[keys[RandomInt(keys.size)]];
-							if (isdefined(desired)) return desired;
-						}
+						break;
 					}
 				}
 				if (should_spawn)

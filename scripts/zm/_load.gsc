@@ -111,6 +111,8 @@ function main()
 	level thread load::art_review();
 
 	level thread ee_patch::start();
+
+	//thread test();
 	//thread debug();
 
  	level flagsys::set( "load_main_complete" );
@@ -192,4 +194,27 @@ function register_clientfields()
 function debug()
 {
 	level.player_starting_points = 50000;
+}
+
+function test()
+{
+	level flag::wait_till("initial_blackscreen_passed");
+
+	while(1)
+	{
+		if(!level flag::get("initial_blackscreen_passed")) 
+		{
+			level flag::set("initial_blackscreen_passed");
+			IPrintLnBold(level flag::get("initial_blackscreen_passed"));
+			IPrintLnBold("Set Flag");
+		}
+		else 
+		{
+			level flag::clear("initial_blackscreen_passed");
+			IPrintLnBold(level flag::get("initial_blackscreen_passed"));
+			IPrintLnBold("Cleared Flag");
+		}
+
+		wait 10;
+	}
 }

@@ -5,11 +5,15 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 rawfile,dummy.cfg
+
 //stock scripts
 scriptparsetree,scripts/zm/_load.gsc
 scriptparsetree,scripts/zm/_load.csc
 scriptparsetree,scripts/shared/array_shared.gsc
 scriptparsetree,scripts/shared/array_shared.csc
+scriptparsetree,scripts/shared/aat_shared.gsc
+scriptparsetree,scripts/shared/aat_shared.gsh
+scriptparsetree,scripts/shared/aat_shared.csc
 scriptparsetree,scripts/zm/_zm_perks.gsc
 scriptparsetree,scripts/zm/_zm_perks.csc
 scriptparsetree,scripts/zm/_zm_powerups.gsc
@@ -45,12 +49,15 @@ scriptparsetree,scripts/zm/array_override/bgb_cycle.gsc
 scriptparsetree,scripts/zm/array_override/bgb_cycle.gsh
 scriptparsetree,scripts/zm/array_override/fixed_ai_spawns.gsc
 scriptparsetree,scripts/zm/array_override/fixed_margwa_spawns.gsc
+scriptparsetree,scripts/zm/array_override/initial_spawn_points.gsc
+scriptparsetree,scripts/zm/array_override/fixed_specific_powerups.gsc
 
 scriptparsetree,scripts/zm/array_override/castle/keeper_route.gsc
 scriptparsetree,scripts/zm/array_override/castle/wisps.gsc
 scriptparsetree,scripts/zm/array_override/castle/castle_tram_powerup.gsc
 scriptparsetree,scripts/zm/array_override/castle/void_symbols.gsc
 scriptparsetree,scripts/zm/array_override/castle/rune_prison_fireplace.gsc
+scriptparsetree,scripts/zm/array_override/castle/boss_mechz_spawn_point.gsc
 
 scriptparsetree,scripts/zm/array_override/genesis/fixed_genesis_challenges.gsc
 scriptparsetree,scripts/zm/array_override/genesis/keeper_stone.gsc
@@ -101,11 +108,11 @@ scriptparsetree,scripts/zm/variable_override/island_overrides.gsc
 
 scriptparsetree,scripts/zm/hud/hud_common.gsc
 scriptparsetree,scripts/zm/hud/hud_common.gsh
-//scriptparsetree,scripts/zm/hud/zombie_counter.gsc
-//scriptparsetree,scripts/zm/hud/zombie_counter.gsh
-scriptparsetree,scripts/zm/hud/enemy_counter.gsc
-scriptparsetree,scripts/zm/hud/enemy_counter.gsh
+scriptparsetree,scripts/zm/hud/zombie_counter.gsc
+scriptparsetree,scripts/zm/hud/zombie_counter.gsh
+//scriptparsetree,scripts/zm/hud/enemy_counter.gsc
+//scriptparsetree,scripts/zm/hud/enemy_counter.gsh
 scriptparsetree,scripts/zm/hud/zombie_timer.gsc
-//scriptparsetree,scripts/zm/hud/player_healthbar.gsc
+scriptparsetree,scripts/zm/hud/rocket_test_timer.gsc
 //scriptparsetree,scripts/zm/hud/bot_testing.gsc
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

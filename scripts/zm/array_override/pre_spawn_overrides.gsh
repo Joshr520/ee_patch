@@ -64,18 +64,23 @@ TUBE_PUZZLE \
 
 
 // ZOD TRAIN
-#define FIXED_TRAIN_LOC array("theater","canal","slums")
+#define FIXED_TRAIN_START array("theater","canal","slums")
 
 #define TRAIN if IS_MAP("zm_zod"){\
 	if (array.size == 3){\
+		thread LOCATION();\
 		districts = true;\
 		for (i = 0; i < 3; i++){\
 			if ( array[i] != "slums" && array[i] != "canal" && array[i] != "theater" ){\
 				districts = false;\
 				break;}}\
-		if (districts){return FIXED_TRAIN_LOC;}}}
+		if (districts){return FIXED_TRAIN_START;}}}
 
-
+function LOCATION()
+{
+	wait 0.05;
+	self.var_c2e30cf8[self.var_5d231abf].var_bd2282e4 = 0;
+}
 
 // CASTLE WOLF PAINTINGS ORDER
 #define UPPER_HALL 0
