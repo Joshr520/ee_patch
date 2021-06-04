@@ -142,7 +142,6 @@ function script_override()
 	craftable_locations::init();
 
 	// free first bgb even offline
-	IPrintLnBold(GetTime());
 	SetDvar("scr_firstGumFree",1);
 	SetDvar("zm_private_rankedmatch",1);
 
