@@ -753,8 +753,6 @@ function flag_wait_any( array, str_flag )
 
 function random( array )
 {
-	PRE_SPAWN_RANDOM
-
 	foreach (override in level.array_random_override)
 	{
 		ret = [[override]](array);
@@ -778,8 +776,6 @@ function random( array )
 @/
 function randomize( array )
 {
-	PRE_SPAWN_RANDOMIZE
-
 	foreach (index, override in level.array_randomize_override)
 	{
 		a_ret = [[override]](array);

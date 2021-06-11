@@ -1,6 +1,5 @@
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
-#using scripts\shared\rank_shared;
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\shared\clientfield_shared;
@@ -76,6 +75,7 @@ function start()
 {
 	//thread bot_testing::bot();
 	//thread debug();
+	//thread stalingrad_debug();
 	//thread zone_monitor_name();
 	//thread zone_monitor_origin();
 
@@ -137,7 +137,7 @@ function array_override()
 function script_override()
 {
 	thread bgb_machine_override::init();
-	thread fixed_random_perks::main();
+	thread fixed_random_perks::init();
 	forced_drops::init();
 	craftable_locations::init();
 
@@ -241,26 +241,41 @@ function zone_monitor_origin()
 function debug()
 {
 	level.player_starting_points = 50000;
+
+	level flag::wait_till("initial_blackscreen_passed");
+
 	/*while(1)
 	{
-		wait 1;
-		IPrintLnBold("Setting 152");
-		level clientfield::increment("gameplay_started", 152);
-		IPrintLnBold(level clientfield::get("gameplay_started"));
+		level flag::clear("initial_blackscreen_passed");
+		IPrintLnBold("Clearing " + level flag::get("initial_blackscreen_passed"));
 		wait 3;
-		IPrintLnBold("Setting 52345");
-		level clientfield::set("gameplay_started", 52345);
-		IPrintLnBold(level clientfield::get("gameplay_started"));
+		level flag::set("initial_blackscreen_passed");
+		IPrintLnBold("Setting " + level flag::get("initial_blackscreen_passed"));
 		wait 3;
-		IPrintLnBold("Setting 1527");
-		level clientfield::set("gameplay_started", 1527);
-		IPrintLnBold(level clientfield::get("gameplay_started"));
-		wait 3;
-		IPrintLnBold("Setting 629");
-		level clientfield::set("gameplay_started", 629);
-		IPrintLnBold(level clientfield::get("gameplay_started"));
-		wait 2;
 	}*/
+}
+
+function stalingrad_debug()
+{
+	level flag::wait_till("initial_blackscreen_passed");
+
+	level flag::set("generator_charged");
+	level flag::set("generator_on");
+	level flag::set("tube_puzzle_complete");
+	level flag::set("ee_cylinder_acquired");
+	level flag::set("key_placement");
+	level flag::set("keys_placed");
+
+	stalingrad_skip_test();
+}
+
+function stalingrad_skip_test()
+{
+	level flag::set("scenario_active");
+	level flag::set("ee_cargo_available");
+	level flag::set("ee_lockdown_complete");
+	level flag::set("scenarios_complete");
+	level flag::set("weapon_cores_delivered");
 }
 
 function custom_spawn_detection()

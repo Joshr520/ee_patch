@@ -19,9 +19,9 @@
 // the most useful function in [3] will be drop_powerup_in_zone(), exactly what it sounds like, but also with the option of
 // inclusivity or exclusivity (i.e. only in a specified zone or anywhere except that zone)
 #define ZOD_FORCED_DROP_0 array("insta_kill",1,true)
-#define ZOD_FORCED_DROP_1 array("double_points",2,true,DROP_IN_ZONE_FUNC,DROP_INSIDE("zone_subway_central"))
-#define ZOD_FORCED_DROP_2 array("full_ammo",3,true)
+#define ZOD_FORCED_DROP_1 array("double_points",3,true,DROP_IN_ZONE_FUNC,DROP_INSIDE("zone_subway_central"))
 #define ZOD_FORCED_DROP_3 array("nuke",4,true)
+#define ZOD_FORCED_DROP_2 array("full_ammo",5,true)
 
 #define CASTLE_FORCED_DROP_0 array("insta_kill",2,true)
 #define CASTLE_FORCED_DROP_1 array("double_points",3,true)

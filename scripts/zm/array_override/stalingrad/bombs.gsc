@@ -2,6 +2,13 @@
 #using scripts\zm\array_override\array_override_common;
 #insert scripts\zm\array_override\array_override_common.gsh;
 
+// 61 72 6D 6F 72 79
+// 73 75 70 70 6C 79 0D 0A
+// 73 74 6F 72 65
+// 74 61 6E 6B
+// 62 61 72 72 61 63 6B 73
+// 63 6F 6D 6D 61 6E 64
+
 #namespace bombs;
 
 #define ARMORY 0

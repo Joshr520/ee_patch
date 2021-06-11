@@ -12,7 +12,8 @@ function init()
 	level.enemy_count = [];
 	level.ignored_enemy_count = [];
 	level.archetypes = ARCHETYPES_ALL;
-	level.counters = [];
+	level.c_active = 0;
+	level.special_round_type = "nothing";
 
 	foreach(archetype in level.archetypes)
 	{
@@ -23,7 +24,6 @@ function init()
 	level flag::wait_till("initial_blackscreen_passed");
 	thread count_archetypes();
 	thread make_counters();
-	thread monitor_counter_positions();
 	thread monitor_round_type();
 }
 
@@ -76,37 +76,43 @@ function make_counters()
 {
 	foreach(index,archetype in level.archetypes)
 	{
-		if(archetype == ARCHETYPE_ZOMBIE)
-		{
-			level.counters[index] = NewHudElem();
-			level.counters[index] hud_common::reset_hud(0,ALIGNX,ALIGNY,HORZALIGN,VERTALIGN,FOREGROUND,HIDEINMENU,T_X,T_Y,FONT,FONTSCALE,COLOR_TOTAL,TEXT);
-			level.counters[index] thread hud_common::main(0,"",&counter_flag_display,&counter_flag_destroy,"","",0,0);
-			level.counters[index] thread lifetime_total(archetype);
-			index++;
-		}
-		level.counters[index] = NewHudElem();
-		//level.counters[index] hud_common::reset_hud(0,ALIGNX,ALIGNY,HORZALIGN,VERTALIGN,FOREGROUND,HIDEINMENU,T_X + X_INCREMENT,T_Y,FONT,FONTSCALE,COLOR_CURRENT,TEXT);
-		level.counters[index] thread hud_common::main(0,"",&counter_flag_display,&counter_flag_destroy,"","",0,0);
-		level.counters[index] thread lifetime_current(archetype);
+		thread make_counter(archetype);
 	}
 }
 
-function monitor_counter_positions()
+function make_counter(archetype)
 {
-	IPrintLnBold(level.counters[0].y);
+	if(archetype == ARCHETYPE_ZOMBIE)
+	{
+		counter_total = NewHudElem();
+		counter_total hud_common::reset_hud(0,ALIGNX,ALIGNY,HORZALIGN,VERTALIGN,FOREGROUND,HIDEINMENU,T_X,T_Y,FONT,FONTSCALE,COLOR_TOTAL,TEXT);
+		counter_total thread hud_common::main(0,"",&counter_flag_display,&counter_flag_destroy,"","",0,0);
+		counter_total thread lifetime_total(archetype);
+	}
+
+	counter = NewHudElem();
+	counter hud_common::reset_hud(0,ALIGNX,ALIGNY,HORZALIGN,VERTALIGN,FOREGROUND,HIDEINMENU,T_X + X_INCREMENT,T_Y,FONT,FONTSCALE,COLOR_CURRENT,TEXT);
+	counter thread hud_common::main(0,"",&counter_flag_display,&counter_flag_destroy,"","",0,0);
+	counter thread lifetime_current(archetype);
+
+	c_active = 0;
+
 	while(1)
 	{
-		c_active = 0;
-		foreach(index, archetype in level.archetypes)
+		if(level.enemy_count[archetype] != 0)
 		{
-			if(archetype == ARCHETYPE_ZOMBIE) index++;
-
-			if(level.enemy_count[archetype] != 0)
+			if(c_active == 0)
 			{
-				c_active++;
-				level.counters[index] thread hud_common::reset_hud(0,ALIGNX,ALIGNY,HORZALIGN,VERTALIGN,FOREGROUND,HIDEINMENU,T_X + X_INCREMENT,T_Y + (Y_INCREMENT * c_active),FONT,FONTSCALE,COLOR_CURRENT,TEXT);
-				//level.counters[index].y = T_Y + (Y_INCREMENT * c_active);
+				c_active = 1;
+				level.c_active++;
 			}
+			counter.y = T_Y + (Y_INCREMENT * level.c_active);
+			//IPrintLnBold("Type: " + archetype + " Active: " + level.c_active + " Y: " + counter.y);
+		}
+		else if(c_active == 1)
+		{
+			c_active = 0;
+			level.c_active--;
 		}
 		wait 0.1;
 	}
@@ -120,15 +126,17 @@ function monitor_round_type()
 		wait 0.1;
 		if(IS_TRUE(level flag::get("special_round")))
 		{
-			if(IS_TRUE(level flag::get("dog_round"))) level notify("special_round_detected", "zombie_dog");
-			else if(IS_TRUE(level flag::get("raps_round"))) level notify("special_round_detected", "raps");
-			else if(IS_TRUE(level flag::get("raz_round"))) level notify("special_round_detected", "raz");
-			else if(IS_TRUE(level flag::get("sentinel_round"))) level notify("special_round_detected", "sentinel_drone");
-			else if(IS_TRUE(level flag::get("spider_round"))) level notify("special_round_detected", "spider");
-			else if(IS_TRUE(level flag::get("wasp_round"))) level notify("special_round_detected", "parasite");
+			if(IS_TRUE(level flag::get("dog_round"))) level.special_round_type = "zombie_dog";
+			else if(IS_TRUE(level flag::get("raps_round"))) level.special_round_type = "raps";
+			else if(IS_TRUE(level flag::get("raz_round"))) level.special_round_type = "raz";
+			else if(IS_TRUE(level flag::get("sentinel_round"))) level.special_round_type = "sentinel_drone";
+			else if(IS_TRUE(level flag::get("spider_round"))) level.special_round_type = "spider";
+			else if(IS_TRUE(level flag::get("wasp_round"))) level.special_round_type = "parasite";
+			wait 0.1;
+			level notify("special_done");
 		}
 		// For some reason, monkey rounds don't seem to set a special_round flag
-		if(IS_TRUE(level flag::get("monkey_round"))) level notify("special_round_detected", "monkey");
+		if(IS_TRUE(level flag::get("monkey_round"))) level.special_round_type = "monkey";
 	}
 }
 
@@ -160,8 +168,8 @@ function lifetime_total(archetype)
 
 	if(IS_TRUE(level flag::get("special_round")) || IS_TRUE(level flag::get("monkey_round")))
 	{
-		level waittill("special_round_detected", type);
-		switch(type)
+		level waittill("special_done");
+		switch(level.special_round_type)
 		{
 			case "zombie_dog":
 				text_s = "Dog";
@@ -192,11 +200,12 @@ function lifetime_total(archetype)
 				text_p = "Monkeys";
 				break;
 		}
+		IPrintLnBold(text_s + " " + text_p);
 		while(IS_TRUE(level flag::get("special_round")) || IS_TRUE(level flag::get("monkey_round")))
 		{
-			if (level.enemy_count[archetype] + level.zombie_total != lastcount)
+			if (zombie_utility::get_current_zombie_count() + level.zombie_total != lastcount)
 			{
-				lastcount = level.enemy_count[archetype] + level.zombie_total;;
+				lastcount = zombie_utility::get_current_zombie_count() + level.zombie_total;
 				if(lastcount == 0) str = "";
 				else if(lastcount == 1) str = lastcount + " " + text_s + " Remaining";
 				else str = lastcount + " " + text_p + " Remaining";
@@ -262,9 +271,9 @@ function lifetime_total(archetype)
 
 	while(!IS_TRUE(level flag::get("special_round")))
 	{
-		if (level.enemy_count[archetype] + level.zombie_total != lastcount)
+		if (zombie_utility::get_current_zombie_count() + level.zombie_total != lastcount)
 		{
-			lastcount = level.enemy_count[archetype] + level.zombie_total;;
+			lastcount = zombie_utility::get_current_zombie_count() + level.zombie_total;
 			if(lastcount == 0) str = "";
 			else if(lastcount == 1) str = lastcount + " " + text_s + " Remaining";
 			else str = lastcount + " " + text_p + " Remaining";

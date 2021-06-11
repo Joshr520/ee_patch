@@ -1116,16 +1116,23 @@ function give_random_perk()
 	{
 		perks = array::randomize( perks );
 		random_perk = perks[0];
-		if (!level.fixed_perks_given)
+
+		while (!self.fixed_perks_given)
 		{
-			while (isdefined(level.fixed_perks[level.perk_index]))
+			fixed_perk = self.fixed_perks[self.perk_index];
+
+			self notify("fixed_random_perk");
+
+			if (IsInArray(perks,fixed_perk)) break;
+			else
 			{
-				fixed_perk = level.fixed_perks[level.perk_index];
-				level notify("fixed_random_perk");
-				if (IsInArray(perks,fixed_perk)) break;
+				fixed_perk = undefined;
+				wait .05;
 			}
-			if (isdefined(fixed_perk)) random_perk = fixed_perk;
 		}
+
+		if (isdefined(fixed_perk)) random_perk = fixed_perk;
+
 		self give_perk( random_perk );
 	}
 	else
@@ -1478,12 +1485,166 @@ function perk_machine_spawn_init()
 	
 		if( a_s_random_perk_locs.size > 0 )
 		{
+			/*
+			RANDOM LOCATION ORDER
+			zod slums
+			zod theater
+			zod canal
+
+			der revive
+			der mule
+			der double
+			der jug
+			der speed
+
+			isla skulls
+			isla plane
+			isla green
+			isla blue
+
+			PERK MACHINE ORDER
+
+			ZOD
+			0 - speed - random
+			1 - revive
+			2 - jug - random
+			3 - mule
+			4 - double - random
+			5 - speed 
+			6 - double 
+			7 - jug 
+			8 - widows
+			9 - staminup
+
+			DER
+			0 - revive - random
+			1 - double - random
+			2 - jug - random
+			3 - speed - random
+			4 - mule - random
+			5 - staminup
+			6 - deadshot
+			
+			ISLA
+			0 - double - random
+			1 - revive - random
+			2 - speed - random
+			3 - mule
+			4 - staminup - random
+			5 - jug
+
+			*/
 			if (GetDvarString("mapname") == "zm_zod")
 			{
-				//Apparently, swapping the 1st and 3rd elements and leaving the 2nd element as is puts Double Tap in slums and Jug in theater
+				/*
+				index - location , perk
+				0 - slums , speed
+				1 - theater , jug
+				2 - canal , double
+				*/
+				#define ZOD_DOUBLE 0
+				#define ZOD_JUG 1
+				#define ZOD_SPEED 2
+/*
+				speed = a_s_random_perk_locs[0];
+				jug = a_s_random_perk_locs[1];
+				double = a_s_random_perk_locs[2];
+
+				a_s_random_perk_locs[ZOD_DOUBLE] = double;
+				a_s_random_perk_locs[ZOD_JUG] = jug;
+				a_s_random_perk_locs[ZOD_SPEED] = speed;*/
+
+				speed = a_s_random_perk_locs[ZOD_SPEED];
+				jug = a_s_random_perk_locs[ZOD_JUG];
+				double = a_s_random_perk_locs[ZOD_DOUBLE];
+
+				a_s_random_perk_locs[0] = speed;
+				a_s_random_perk_locs[1] = jug;
+				a_s_random_perk_locs[2] = double;
+
+				/*
 				tempperk = a_s_random_perk_locs[0];
 				a_s_random_perk_locs[0] = a_s_random_perk_locs[2];
-				a_s_random_perk_locs[2] = tempperk;//a_s_random_perk_locs[0];
+				a_s_random_perk_locs[2] = tempperk;//a_s_random_perk_locs[0];*/
+			}
+			else if (GetDvarString("mapname") == "zm_factory")
+			{
+				/*
+				index - location , perk
+				0 - bowie knife , revive
+				1 - furnace room , double
+				2 - bridge , jug
+				3 - trip mines , speed
+				4 - outside spawn , mule
+				*/
+				#define DER_REVIVE 3
+				#define DER_MULE 0
+				#define DER_DOUBLE 2
+				#define DER_JUG 1
+				#define DER_SPEED 4
+
+				revive = a_s_random_perk_locs[DER_REVIVE];
+				double = a_s_random_perk_locs[DER_DOUBLE];
+				jug = a_s_random_perk_locs[DER_JUG];
+				speed = a_s_random_perk_locs[DER_SPEED];
+				mule = a_s_random_perk_locs[DER_MULE];
+
+				a_s_random_perk_locs[0] = revive;
+				a_s_random_perk_locs[1] = double;
+				a_s_random_perk_locs[2] = jug;
+				a_s_random_perk_locs[3] = speed;
+				a_s_random_perk_locs[4] = mule;
+			}
+			else if (GetDvarString("mapname") == "zm_island")
+			{
+				/*
+				SOLO
+				0 - skulls , double
+				1 - plane , revive
+				2 - green , speed
+				3 - blue , staminup
+
+				COOP
+				0 - skulls , double
+				1 - plane , speed
+				2 - green , staminup
+				3 - blue , jug
+				*/
+				#define ISLA_DOUBLE_SOLO 0
+				#define ISLA_REVIVE_SOLO 1
+				#define ISLA_SPEED_SOLO 2
+				#define ISLA_STAMINUP_SOLO 3
+
+				#define ISLA_DOUBLE 0
+				#define ISLA_SPEED 1
+				#define ISLA_STAMINUP 2
+				#define ISLA_JUG 3
+/*
+				if (level flag::get("solo_game"))
+				{
+					double = a_s_random_perk_locs[ISLA_DOUBLE_SOLO];
+					revive = a_s_random_perk_locs[ISLA_REVIVE_SOLO];
+					speed = a_s_random_perk_locs[ISLA_SPEED_SOLO];
+					staminup = a_s_random_perk_locs[ISLA_STAMINUP_SOLO];
+
+					a_s_random_perk_locs[0] = double;
+					a_s_random_perk_locs[1] = revive;
+					a_s_random_perk_locs[2] = speed;
+					a_s_random_perk_locs[3] = staminup;
+				}
+				else
+				{
+					double = a_s_random_perk_locs[ISLA_DOUBLE];
+					speed = a_s_random_perk_locs[ISLA_SPEED];
+					staminup = a_s_random_perk_locs[ISLA_STAMINUP];
+					jug = a_s_random_perk_locs[ISLA_JUG];
+
+					a_s_random_perk_locs[0] = double;
+					a_s_random_perk_locs[1] = speed;
+					a_s_random_perk_locs[2] = staminup;
+					a_s_random_perk_locs[3] = jug;
+				}
+				*/
 			}
 			else
 			{

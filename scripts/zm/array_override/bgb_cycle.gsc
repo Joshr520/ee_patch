@@ -76,6 +76,7 @@ function randomize_override(array)
 					return a_ret;
 				}
 			}
+			else return CASTLE_P0_BGB_CYCLE_5_M;
 		}
 	}
 }
@@ -90,7 +91,7 @@ function main()
 
 	// leave this to default to the Classics list. the using_megas() function will make sure the Megas list is used if the player is using Megas
 	bgb_cycles_list();
-	level.bgb_fixed_cycles = level.bgb_cycles_c;
+	level.bgb_fixed_cycles = level.bgb_cycles_m;
 
 	//level.get_lobby_index_func = &bgb_common::get_lobby_index;
 

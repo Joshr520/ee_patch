@@ -3,8 +3,8 @@
 #using scripts\shared\util_shared;
 #using scripts\zm\_zm_weapons;
 #using scripts\zm\_zm_zonemgr;
-
 #using scripts\zm\array_override\array_override_common;
+
 #insert scripts\zm\array_override\array_override_common.gsh;
 
 #namespace castle_wisps;
@@ -52,6 +52,8 @@ function random_override(array)
 
 function main()
 {
+	level flag::wait_till("initial_blackscreen_passed");
+	
 	level.castle_wisps_done = 0;
 
 	if(GetPlayers().size == 1) level.wisp_order_list = wisps_struct_to_vec(SOLO_WISP_ORDER_LIST);

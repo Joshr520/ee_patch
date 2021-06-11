@@ -27,8 +27,8 @@
 "zone_subway_pap_ritual"- pap room by ritual table
 */
 
-#define ZOD_P0_ABH_ZONES_C array("zone_slums_junction","zone_subway_central","zone_start","zone_theater_high_A","zone_slums_D","zone_start","zone_theater_high_A","zone_subway_central")
-#define ZOD_P0_ABH_ZONES_M array("zone_slums_junction","zone_subway_central","zone_start","zone_theater_high_A","zone_slums_D","zone_start","zone_theater_high_A","zone_subway_central")
+#define ZOD_P0_ABH_ZONES_C array("zone_canal_D","zone_subway_central","zone_start","zone_theater_high_A","zone_slums_D","zone_start","zone_canal_junction","zone_theater_high_A","zone_subway_central")
+#define ZOD_P0_ABH_ZONES_M array("zone_canal_D","zone_subway_central","zone_start","zone_theater_high_A","zone_slums_D","zone_start","zone_canal_junction","zone_theater_high_A","zone_subway_central")
 
 #define ZOD_P1_ABH_ZONES_C array()
 #define ZOD_P1_ABH_ZONES_M array()

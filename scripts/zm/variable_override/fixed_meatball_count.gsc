@@ -9,13 +9,11 @@ function monitor_meatball_count()
 	{
 		level waittill("end_of_round");
 	}
-	wait(70);
 	while (level.round_number == 10)
 	{
 		if (level.zombie_total > 10)
 		{
 			level.zombie_total = 10;
-			return;
 		}
 		wait(1);
 	}

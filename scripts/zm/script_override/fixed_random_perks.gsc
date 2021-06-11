@@ -1,3 +1,5 @@
+#using scripts\shared\flag_shared;
+
 #namespace fixed_random_perks;
 
 #define PERK(name) ("specialty_"+name)
@@ -9,8 +11,8 @@
 #define WIDOWS PERK("widowswine")
 #define STAMINUP PERK("staminup")
 #define MULEKICK PERK("additionalprimaryweapon")
-#define CHERRY PERK("specialty_electriccherry")
-#define DEADSHOT PERK("specialty_deadshot")
+#define CHERRY PERK("electriccherry")
+#define DEADSHOT PERK("deadshot")
 
 //the list of the predetermined random perk bottles to be given in order (from Reign Drops)
 #define FIXED_PERKS_ZOD array(STAMINUP,MULEKICK,DOUBLE,JUG,SPEED,WIDOWS,REVIVE)
@@ -18,12 +20,13 @@
 #define FIXED_PERKS_CASTLE array(STAMINUP,MULEKICK,JUG,DOUBLE,SPEED,WIDOWS,CHERRY,DEADSHOT,REVIVE)
 #define FIXED_PERKS array(STAMINUP,DOUBLE,JUG,SPEED)
 
+function init()
+{
+	thread main();
+}
+
 function main()
 {
-	//flag to set when all the desired perks are given.
-	level.fixed_perks_given = false;
-
-	//populate the level array var with the desired perks for the _zm_perks script to use
 	switch (GetDvarString("mapname"))
 	{
 		case "zm_zod":
@@ -38,16 +41,26 @@ function main()
 		default:
 			level.fixed_perks = FIXED_PERKS;
 	}
-	level.perk_index = 0;
-
-	while(level.perk_index < level.fixed_perks.size)
+	level flag::wait_till("all_players_connected");
+	players = GetPlayers();
+	for (i = 0; i < players.size; i++)
 	{
-		//_zm_perks script will notify level when a "random" perk has been given
-		level waittill("fixed_random_perk");
-		wait(1);
-		level.perk_index++;
+		players[i].fixed_perks = ( IsArray(level.fixed_perks[0]) ? level.fixed_perks[i] : level.fixed_perks );
+		players[i] thread player_perks();
+	}
+}
+
+function player_perks()
+{
+	self.fixed_perks_given = 0;
+
+	self.perk_index = 0;
+
+	while(self.perk_index < self.fixed_perks.size)
+	{
+		self waittill("fixed_random_perk");
+		self.perk_index++;
 	}
 
-	//all desired perks have been given
-	level.fixed_perks_given = true;
+	self.fixed_perks_given = 1;
 }

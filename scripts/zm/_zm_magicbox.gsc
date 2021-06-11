@@ -1305,11 +1305,15 @@ function treasure_chest_ChooseWeightedRandomWeapon( player )
 	}
 	else if(level.script == "zm_castle")
 	{
+		if(!player zm_weapons::has_weapon_or_upgrade(GetWeapon("lmg_cqb"))) return GetWeapon("lmg_cqb");
+	}
+	/*else if(level.script == "zm_castle")
+	{
 		if(!player zm_weapons::has_weapon_or_upgrade(GetWeapon("launcher_standard"))) return GetWeapon("launcher_standard");
 		else if(!player zm_weapons::has_weapon_or_upgrade(GetWeapon("cymbal_monkey"))) return GetWeapon("cymbal_monkey");
 		else if(!player zm_weapons::has_weapon_or_upgrade(GetWeapon("ar_accurate"))) return GetWeapon("ar_accurate");
 		else if(!player zm_weapons::has_weapon_or_upgrade(GetWeapon("shotgun_fullauto"))) return GetWeapon("shotgun_fullauto");
-	}
+	}*/
 
 	keys = array::randomize( GetArrayKeys( level.zombie_weapons ) );
 	if (IsDefined(level.CustomRandomWeaponWeights))

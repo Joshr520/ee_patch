@@ -16,6 +16,7 @@ function random_override(array)
 	if(IsInArray(array, "double_points") && (isdefined(self.archetype) && self.archetype == "margwa"))
 	{
 		//IPrintLnBold("Margwa died, giving nuke powerup");
+		if(level.round_number == 6) return "minigun";
 		return "nuke";
 	}
 }

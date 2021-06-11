@@ -54,7 +54,7 @@ function factory_dog_rounds()
 
 #define CASTLE_DOGS_1 5
 
-#define CASTLE_DOGS_ARR array(2,18,25,32,39,46,53)
+#define CASTLE_DOGS_ARR array(5,12,19,26,33,40,47,54,61,68,75,82,89,96)
 
 function castle_dog_rounds_simple()
 {
