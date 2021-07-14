@@ -59,11 +59,13 @@ scriptparsetree,scripts/zm/hud/hud_common.gsh
 scriptparsetree,scripts/zm/hud/rocket_test_timer.gsc
 scriptparsetree,scripts/zm/hud/zm_hud_ee_patch.gsc
 scriptparsetree,scripts/zm/hud/zombie_counter.gsc
+scriptparsetree,scripts/zm/hud/zombie_counter.gsh
 scriptparsetree,scripts/zm/script_override/bgb_machine_override.gsc
 scriptparsetree,scripts/zm/script_override/craftable_locations.gsc
 scriptparsetree,scripts/zm/script_override/fixed_random_perks.gsc
 scriptparsetree,scripts/zm/script_override/forced_drops.gsc
 scriptparsetree,scripts/zm/script_override/tomb/fixed_crypt_discs.gsc
+scriptparsetree,scripts/zm/script_override/tomb/fixed_zombie_blood.gsc
 scriptparsetree,scripts/zm/variable_override/fixed_meatball_count.gsc
 scriptparsetree,scripts/zm/variable_override/fixed_special_rounds.gsc
 scriptparsetree,scripts/zm/variable_override/island_overrides.gsc

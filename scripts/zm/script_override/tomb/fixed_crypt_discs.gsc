@@ -14,20 +14,25 @@ function init()
 
 function main()
 {
-	level util::waittill_any("gramophone_vinyl_player_picked_up", "open_sesame", "open_all_gramophone_doors");
 	level flag::wait_till("disc_rotation_active");
-	level flag::wait_till_clear("disc_rotation_active");
+	wait 2;
+	//level flag::wait_till_clear("disc_rotation_active");
 
 	discs = GetEntArray("crypt_puzzle_disc", "script_noteworthy");
-	change_discs(discs, array(0,2,0,2));
+	change_discs(discs, array(2,0,2,0));
 	
 	level flag::wait_till("staff_water_upgrade_unlocked");
 
 	discs = GetEntArray("crypt_puzzle_disc", "script_noteworthy");
-	change_discs(discs, array(1,2,2,2));
+	change_discs(discs, array(1,3,1,3));
 
 	level flag::wait_till("staff_air_upgrade_unlocked");
+
+	change_discs(discs, array(3,1,3,1));
+
 	level flag::wait_till("staff_lightning_upgrade_unlocked");
+
+	change_discs(discs, array(0,2,0,2));
 }
 
 function change_discs(discs, pos)
@@ -39,7 +44,8 @@ function change_discs(discs, pos)
 		{
 			continue;
 		}
-		disc.position = pos[index];
+		if(disc.position != pos[index-1]) disc.position = pos[index-1];
+		wait 2;
 	}
 	move_all_discs(discs);
 }
@@ -50,7 +56,7 @@ function move_all_discs(discs)
 	{
 		discs = undefined;
 	}
-	level flag::set("disc_rotation_active");
+	//level flag::set("disc_rotation_active");
 	if(!isdefined(discs))
 	{
 		discs = GetEntArray("chamber_puzzle_disc", "script_noteworthy");
@@ -59,7 +65,7 @@ function move_all_discs(discs)
 	{
 		e_disc move_disc();
 	}
-	level flag::clear("disc_rotation_active");
+	//level flag::clear("disc_rotation_active");
 }
 
 function move_disc()

@@ -12,7 +12,7 @@ scriptparsetree,scripts/zm/_load.gsc
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\share\raw\scripts\shared\shared.gsh,1616314078,
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\share\raw\scripts\shared\version.gsh,1616313969,
 scriptparsetree,scripts/zm/_load.csc
-	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\_load.csc,1626223298,
+	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\_load.csc,1626227306,
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\share\raw\scripts\shared\shared.gsh,1616314078,
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\share\raw\scripts\shared\version.gsh,1616313969,
 scriptparsetree,scripts/shared/array_shared.gsc
@@ -98,7 +98,7 @@ scriptparsetree,scripts/zm/zm_tomb_giant_robot.gsc
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\zm_tomb_giant_robot.gsc,1626146589,
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\share\raw\scripts\shared\shared.gsh,1616314078,
 scriptparsetree,scripts/zm/ee_patch.gsc
-	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\ee_patch.gsc,1626223495,
+	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\ee_patch.gsc,1626231802,
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\share\raw\scripts\shared\shared.gsh,1616314078,
 scriptparsetree,scripts/zm/array_override/array_override_common.gsc
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\array_override\array_override_common.gsc,1618789302,
@@ -210,7 +210,9 @@ scriptparsetree,scripts/zm/script_override/bgb_machine_override.gsc
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\script_override\bgb_machine_override.gsc,1619743302,
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\share\raw\scripts\shared\shared.gsh,1616314078,
 scriptparsetree,scripts/zm/script_override/tomb/fixed_crypt_discs.gsc
-	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\script_override\tomb\fixed_crypt_discs.gsc,1626222379,
+	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\script_override\tomb\fixed_crypt_discs.gsc,1626230104,
+scriptparsetree,scripts/zm/script_override/tomb/fixed_zombie_blood.gsc
+	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\script_override\tomb\fixed_zombie_blood.gsc,1626231961,
 scriptparsetree,scripts/zm/variable_override/fixed_special_rounds.gsc
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\variable_override\fixed_special_rounds.gsc,1622934245,
 scriptparsetree,scripts/zm/variable_override/zod/idgun_pieces.gsc
@@ -234,8 +236,11 @@ scriptparsetree,scripts/zm/hud/hud_common.gsc
 scriptparsetree,scripts/zm/hud/hud_common.gsh
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\hud\hud_common.gsh,1618530526,
 scriptparsetree,scripts/zm/hud/zombie_counter.gsc
-	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\hud\zombie_counter.gsc,1624325821,
+	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\hud\zombie_counter.gsc,1626227299,
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\hud\hud_common.gsh,1618530526,
+	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\hud\zombie_counter.gsh,1620281361,
+scriptparsetree,scripts/zm/hud/zombie_counter.gsh
+	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\hud\zombie_counter.gsh,1620281361,
 scriptparsetree,scripts/zm/hud/zm_hud_ee_patch.gsc
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\scripts\zm\hud\zm_hud_ee_patch.gsc,1626223837,
 scriptparsetree,scripts/zm/hud/rocket_test_timer.gsc
@@ -245,7 +250,7 @@ rawfile,ui/uieditor/widgets/hud/zm_ee_patch/zombiecounter.lua
 texturecombo,zm_mod
 assetlist,zm_mod
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\share\raw\gamedata\playeranim\playeranimtypes.txt,1616313943,
-	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\zone_source\zm_mod.zone,1626223510,0a27dd11,6278e0d6,3f76e882,8ec9e3b4
+	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\mods\ee_patch\zone_source\zm_mod.zone,1626231819,ff21f099,bbea2dce,bfe2b92c,d4cc867a
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\share\zone_source\zm_mod.class,1616313842,
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\share\zone_source\mod_default.class,1616313715,
 	file,E:\Steam\steamapps\common\Call of Duty Black Ops III\share\zone_source\default.class,1616313848,

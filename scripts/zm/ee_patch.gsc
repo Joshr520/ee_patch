@@ -49,6 +49,7 @@
 #using scripts\zm\script_override\forced_drops;
 #using scripts\zm\script_override\bgb_machine_override;
 #using scripts\zm\script_override\tomb\fixed_crypt_discs;
+#using scripts\zm\script_override\tomb\fixed_zombie_blood;
 
 #using scripts\zm\variable_override\fixed_special_rounds;
 
@@ -62,7 +63,8 @@
 #using scripts\zm\variable_override\stalingrad\stalingrad_overrides;
 #using scripts\zm\variable_override\island_overrides;
 
-#using scripts\zm\hud\zm_hud_ee_patch;
+#using scripts\zm\hud\zombie_counter;
+//#using scripts\zm\hud\zm_hud_ee_patch;
 //#using scripts\zm\hud\enemy_counter;
 #using scripts\zm\hud\rocket_test_timer;
 
@@ -76,7 +78,7 @@
 function start()
 {
 	//thread bot_testing::bot();
-	//thread debug();
+	thread debug();
 	//thread stalingrad_debug();
 	//thread zone_monitor_name();
 	//thread zone_monitor_origin();
@@ -143,6 +145,7 @@ function script_override()
 	thread bgb_machine_override::init();
 	thread fixed_random_perks::init();
 	thread fixed_crypt_discs::init();
+	thread fixed_zombie_blood::init();
 	forced_drops::init();
 	craftable_locations::init();
 
@@ -215,7 +218,8 @@ function show_custom_hud_elements()
 {
 	host = GetPlayers()[0];
 
-	thread zm_hud_ee_patch::init();
+	thread zombie_counter::init();
+	//thread zm_hud_ee_patch::init();
 	//thread enemy_counter::init();
 	thread rocket_test_timer::main();
 }
