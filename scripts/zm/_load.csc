@@ -101,6 +101,8 @@ function main()
 	level thread load::art_review();
 
 	level flagsys::set( "load_main_complete" );
+
+	LuiLoad("ui.uieditor.menus.hud.t7hud_zm_ee_patch");
 }
 
 function server_time()

@@ -62,6 +62,7 @@ function monitor_department_top()
 	wait 1;
 	level.var_a8b674f9 = 0;
 	level flag::wait_till("department_store_upper_open");
+	if(level.round_number >= 5) return;
 	wait 1;
 	level.var_a8b674f9 = 1;
 	level.var_de98a8ad = 1;

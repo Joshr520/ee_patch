@@ -41,11 +41,14 @@
 #using scripts\zm\array_override\moon\fixed_digger;
 
 #using scripts\zm\array_override\tomb\templar_target;
+#using scripts\zm\array_override\tomb\fixed_ice_tiles;
+#using scripts\zm\array_override\tomb\fixed_digsites;
 
 #using scripts\zm\script_override\craftable_locations;
 #using scripts\zm\script_override\fixed_random_perks;
 #using scripts\zm\script_override\forced_drops;
 #using scripts\zm\script_override\bgb_machine_override;
+#using scripts\zm\script_override\tomb\fixed_crypt_discs;
 
 #using scripts\zm\variable_override\fixed_special_rounds;
 
@@ -56,12 +59,11 @@
 #using scripts\zm\variable_override\zod\zod_margwa_rounds;
 #using scripts\zm\variable_override\fixed_meatball_count;
 
-#using scripts\zm\variable_override\stalingrad_overrides;
+#using scripts\zm\variable_override\stalingrad\stalingrad_overrides;
 #using scripts\zm\variable_override\island_overrides;
 
-#using scripts\zm\hud\zombie_counter;
+#using scripts\zm\hud\zm_hud_ee_patch;
 //#using scripts\zm\hud\enemy_counter;
-#using scripts\zm\hud\zombie_timer;
 #using scripts\zm\hud\rocket_test_timer;
 
 //#using scripts\zm\hud\bot_testing;
@@ -132,12 +134,15 @@ function array_override()
 
 	// TOMB
 	templar_target::init();
+	fixed_ice_tiles::init();
+	fixed_digsites::init();
 }
 
 function script_override()
 {
 	thread bgb_machine_override::init();
 	thread fixed_random_perks::init();
+	thread fixed_crypt_discs::init();
 	forced_drops::init();
 	craftable_locations::init();
 
@@ -210,9 +215,8 @@ function show_custom_hud_elements()
 {
 	host = GetPlayers()[0];
 
-	thread zombie_counter::init();
+	thread zm_hud_ee_patch::init();
 	//thread enemy_counter::init();
-	thread zombie_timer::init();
 	thread rocket_test_timer::main();
 }
 
@@ -230,8 +234,8 @@ function zone_monitor_name()
 function zone_monitor_origin()
 {
 	while(1)
-	{
-		org = GetPlayers()[0].origin;
+	
+{		org = GetPlayers()[0].origin;
 		str = "( " + org[0] + " , " + org[1] + " , " + org[2] + " )";
 		IPrintLn(str);
 		wait 2.5;
@@ -246,12 +250,12 @@ function debug()
 
 	/*while(1)
 	{
-		level flag::clear("initial_blackscreen_passed");
-		IPrintLnBold("Clearing " + level flag::get("initial_blackscreen_passed"));
-		wait 3;
-		level flag::set("initial_blackscreen_passed");
-		IPrintLnBold("Setting " + level flag::get("initial_blackscreen_passed"));
-		wait 3;
+		enemies = GetAISpeciesArray(level.zombie_team, "all");
+		foreach(enemy in enemies)
+		{
+			enemy DoDamage(enemy.health, enemy.origin);
+		}
+		wait 0.05;
 	}*/
 }
 
@@ -265,17 +269,6 @@ function stalingrad_debug()
 	level flag::set("ee_cylinder_acquired");
 	level flag::set("key_placement");
 	level flag::set("keys_placed");
-
-	stalingrad_skip_test();
-}
-
-function stalingrad_skip_test()
-{
-	level flag::set("scenario_active");
-	level flag::set("ee_cargo_available");
-	level flag::set("ee_lockdown_complete");
-	level flag::set("scenarios_complete");
-	level flag::set("weapon_cores_delivered");
 }
 
 function custom_spawn_detection()

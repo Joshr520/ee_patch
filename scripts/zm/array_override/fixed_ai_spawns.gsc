@@ -1,106 +1,138 @@
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
 #using scripts\shared\flag_shared;
-#using scripts\zm\array_override\array_override_common;
-#using scripts\zm\_zm_zonemgr;
 #using scripts\shared\ai\zombie_utility;
 
+#using scripts\zm\array_override\array_override_common;
 #insert scripts\zm\array_override\array_override_common.gsh;
+
+#using scripts\zm\_zm_zonemgr;
 
 #namespace fixed_ai_spawns;
 
-#define ENTRY_HALL_BACK (-1074,3955,664)
-#define ENTRY_LCOURTYARD (1730,2679,383)
-#define ENTRY_LEFT_UNDERCROFT (-1190,2010,200)
-#define ENTRY_RIGHT_UNDERCROFT (-1190,2620,200)
-#define ENTRY_CLOCKTOWER (-1364,1504,808)
-#define ENTRY_GATEHOUSE (1832,1514,400)
-#define ENTRY_ROCKET (5718,-2950,-2291)
-#define ENTRY_VOID (-875,1330,505)
-#define ENTRY_COURTYARD (-510,1960,608)
+// condition function entries - define them here, they should all be arrays with [0] being the function ptr, and [1] being the array of arguments
+#define IS_FLAG_SET(a_args) array(&is_flag_set,a_args)
 
-#define ENTRY_FOOTLIGHT_BOTTOM (4770,-4070,128)
-#define ENTRY_FOOTLIGHT_MIDDLE (4030,-4310,128)
-#define ENTRY_WATRERFRONT_EGG (3090,-7800,256)
-#define ENTRY_JUNCTION_LAUNDRY (2070,-5550,128)
-#define ENTRY_RIFT_LEFT (2090,-4480,-398)
-
-#define ENTRY_COMMAND_BOTTOM_CLOSE (405,4000,5)
-#define ENTRY_BUNKER_TRUCK (-210,2450,10)
-#define ENTRY_INFIRMARY_TOP_FRONT (-620,2900,320)
-#define ENTRY_ARMORY_MIDDLE_WINDOW (620,3210,165)
-#define ENTRY_ARMORY_DROPDOWN (920,3535,160)
-#define ENTRY_ARMORY_TO_DC (770,3450,0)
 
 // SPAWN "REQUESTS": fixed zombies spawns for very early rounds (not for high rounds, as spawns eventually even out and are effectively no longer random)
-// [0] Coordinates of an entity that the zombies should spawn closest to
-#define REF_POINT_INDEX 0
-// [1] Number of zombies to spawn (doesn't need to be any more than 3 if it's a boardable entry)
-#define NUM_Z_INDEX 1
-#define N_RND_INDEX 2
-#define FUNC_INDEX 3
+// [0] Zone name of the desired spawner
+#define ZONE_INDEX 0
+// [1] Index of the spawner in that zone's spawner array of the desired spawner type ("zombie_location","margwa_location",etc.)
+#define SPAWNER_INDEX 1
+// [2] Number of zombies to spawn (doesn't need to be any more than 3 if it's a boardable entry)
+#define NUM_Z_INDEX 2
+// [3] Round number to deliver this request
+#define N_RND_INDEX 3
+// [4] Extra conditions (each condition is an array of 2 elements, [0] the condition function (boolean) and [1] the array of args to pass in
+#define FUNC_INDEX 4
 
-#define SOLO_CASTLE_SPAWN_0 array(ENTRY_HALL_BACK,4,2,array())
-#define SOLO_CASTLE_SPAWN_1 array(ENTRY_LCOURTYARD,4,3,array())
-#define SOLO_CASTLE_SPAWN_2 array(ENTRY_LEFT_UNDERCROFT,4,4,array())
-#define SOLO_CASTLE_SPAWN_3 array(ENTRY_ROCKET,6,6,array())
-#define SOLO_CASTLE_SPAWN_4 array(ENTRY_GATEHOUSE,6,6,array())
-#define SOLO_CASTLE_SPAWN_5 array(ENTRY_CLOCKTOWER,6,6,array())
-#define SOLO_CASTLE_SPAWN_6 array(ENTRY_LEFT_UNDERCROFT,10,7,array())
-#define SOLO_CASTLE_SPAWN_7 array(ENTRY_RIGHT_UNDERCROFT,10,7,array())
+#define SOLO_ZOD_SPAWN_0 array("zone_subway_north",0,10,3,array())
+#define SOLO_ZOD_SPAWN_1 array("zone_theater_A",0,6,4,array())
+#define SOLO_ZOD_SPAWN_2 array("zone_theater_A",1,6,4,array())
+#define SOLO_ZOD_SPAWN_3 array("zone_slums_high_B",1,10,5,array())
+#define SOLO_ZOD_SPAWN_4 array("zone_junction_start",1,1,5,array())
+#define SOLO_ZOD_SPAWN_5 array("zone_junction_slums",1,1,5,array())
 
-#define DUO_CASTLE_SPAWN_0 array(ENTRY_LCOURTYARD,3,2,array())
-#define DUO_CASTLE_SPAWN_1 array(ENTRY_LCOURTYARD,3,3,array())
-#define DUO_CASTLE_SPAWN_2 array(ENTRY_HALL_BACK,3,3,array())
-#define DUO_CASTLE_SPAWN_3 array(ENTRY_LEFT_UNDERCROFT,4,4,array())
-#define DUO_CASTLE_SPAWN_4 array(ENTRY_HALL_BACK,3,4,array())
-#define DUO_CASTLE_SPAWN_5 array(ENTRY_VOID,3,6,array())
-#define DUO_CASTLE_SPAWN_6 array(ENTRY_ROCKET,5,6,array())
-#define DUO_CASTLE_SPAWN_7 array(ENTRY_GATEHOUSE,2,6,array())
-#define DUO_CASTLE_SPAWN_8 array(ENTRY_CLOCKTOWER,5,6,array())
-#define DUO_CASTLE_SPAWN_9 array(ENTRY_LEFT_UNDERCROFT,10,7,array())
-#define DUO_CASTLE_SPAWN_10 array(ENTRY_RIGHT_UNDERCROFT,10,7,array())
-#define DUO_CASTLE_SPAWN_11 array(ENTRY_VOID,6,8,array())
+#define FACTORY_SPAWN_0 array("receiver_zone",3,6,1,array())
+#define FACTORY_SPAWN_1 array("receiver_zone",3,8,2,array())
 
-#define SOLO_ZOD_SPAWN_0 array(ENTRY_RIFT_LEFT,10,3,array())
-#define SOLO_ZOD_SPAWN_1 array(ENTRY_FOOTLIGHT_BOTTOM,6,4,array())
-#define SOLO_ZOD_SPAWN_2 array(ENTRY_FOOTLIGHT_MIDDLE,6,4,array())
-#define SOLO_ZOD_SPAWN_3 array(ENTRY_WATRERFRONT_EGG,10,5,array())
-#define SOLO_ZOD_SPAWN_4 array(ENTRY_JUNCTION_LAUNDRY,2,5,array())
+#define SOLO_CASTLE_SPAWN_0 array("zone_great_hall",0,4,2,array())
+#define SOLO_CASTLE_SPAWN_1 array("zone_lower_courtyard",1,4,3,array())
+#define SOLO_CASTLE_SPAWN_2 array("zone_undercroft",1,4,4,array())
+#define SOLO_CASTLE_SPAWN_3 array("zone_v10_pad",3,6,6,array())
+#define SOLO_CASTLE_SPAWN_4 array("zone_gatehouse",1,6,6,array())
+#define SOLO_CASTLE_SPAWN_5 array("zone_clocktower",0,6,6,array())
+#define SOLO_CASTLE_SPAWN_6 array("zone_undercroft",2,10,7,array())
+#define SOLO_CASTLE_SPAWN_7 array("zone_undercroft",3,10,7,array())
 
-#define STALINGRAD_SPAWN_1 array(ENTRY_ARMORY_TO_DC,1,1,array())
-#define STALINGRAD_SPAWN_2 array(ENTRY_ARMORY_DROPDOWN,3,2,array())
-#define STALINGRAD_SPAWN_3 array(ENTRY_INFIRMARY_TOP_FRONT,3,3,array())
-#define STALINGRAD_SPAWN_4 array(ENTRY_INFIRMARY_TOP_FRONT,3,4,array())
+#define DUO_CASTLE_SPAWN_0 array("zone_lower_courtyard",1,3,2,array())
+#define DUO_CASTLE_SPAWN_1 array("zone_lower_courtyard",1,3,3,array())
+#define DUO_CASTLE_SPAWN_2 array("zone_great_hall",0,3,3,array())
+#define DUO_CASTLE_SPAWN_3 array("zone_undercroft",1,4,4,array())
+#define DUO_CASTLE_SPAWN_4 array("zone_great_hall",0,3,4,array())
+#define DUO_CASTLE_SPAWN_5 array("zone_tram_to_subclocktower_top",1,3,6,array())
+#define DUO_CASTLE_SPAWN_6 array("zone_v10_pad",3,5,6,array())
+#define DUO_CASTLE_SPAWN_7 array("zone_gatehouse",1,2,6,array())
+#define DUO_CASTLE_SPAWN_8 array("zone_clocktower",0,5,6,array())
+#define DUO_CASTLE_SPAWN_9 array("zone_undercroft",2,10,7,array())
+#define DUO_CASTLE_SPAWN_10 array("zone_undercroft",3,10,7,array())
+#define DUO_CASTLE_SPAWN_11 array("zone_tram_to_subclocktower_top",1,6,8,array())
 
-#define SOLO_ZOD_FIXED_SPAWNS array(SOLO_ZOD_SPAWN_0,SOLO_ZOD_SPAWN_1,SOLO_ZOD_SPAWN_2,SOLO_ZOD_SPAWN_3,SOLO_ZOD_SPAWN_4)
+#define STALINGRAD_SPAWN_0 array("judicial_street_zone",1,1,1,array())
+#define STALINGRAD_SPAWN_1 array("yellow_D_zone",0,3,2,array())
+#define STALINGRAD_SPAWN_2 array("red_brick_C_zone",2,3,3,array())
+#define STALINGRAD_SPAWN_3 array("red_brick_C_zone",2,3,4,array())
+
+#define TOMB_SPAWN_0 array("zone_village_2",0,6,4,array())
+#define TOMB_SPAWN_1 array("zone_chamber_5",0,6,6,array())
+#define TOMB_SPAWN_2 array("zone_chamber_5",1,6,6,array())
+#define TOMB_SPAWN_3 array("zone_chamber_0",1,6,9,array())
+#define TOMB_SPAWN_4 array("zone_chamber_0",2,6,9,array())
+#define TOMB_SPAWN_5 array("zone_chamber_6",0,16,11,array())
+#define TOMB_SPAWN_6 array("zone_chamber_6",1,16,11,array())
+#define TOMB_SPAWN_7 array("zone_village_2",0,12,12,array())
+#define TOMB_SPAWN_8 array("zone_village_2",0,10,13,array())
+#define TOMB_SPAWN_9 array("zone_chamber_0",0,8,19,array())
+#define TOMB_SPAWN_10 array("zone_chamber_0",1,8,19,array())
+#define TOMB_SPAWN_11 array("zone_chamber_0",2,8,19,array())
+#define TOMB_SPAWN_12 array("zone_chamber_0",3,8,19,array())
+#define TOMB_SPAWN_13 array("zone_chamber_3",0,8,19,array())
+#define TOMB_SPAWN_14 array("zone_chamber_3",1,8,19,array())
+#define TOMB_SPAWN_15 array("zone_chamber_3",2,8,19,array())
+#define TOMB_SPAWN_16 array("zone_chamber_3",3,8,19,array())
+#define TOMB_SPAWN_17 array("zone_chamber_0",0,8,20,array())
+#define TOMB_SPAWN_18 array("zone_chamber_0",1,8,20,array())
+#define TOMB_SPAWN_19 array("zone_chamber_0",2,8,20,array())
+#define TOMB_SPAWN_20 array("zone_chamber_0",3,8,20,array())
+#define TOMB_SPAWN_21 array("zone_chamber_3",0,8,20,array())
+#define TOMB_SPAWN_22 array("zone_chamber_3",1,8,20,array())
+#define TOMB_SPAWN_23 array("zone_chamber_3",2,8,20,array())
+#define TOMB_SPAWN_24 array("zone_chamber_3",3,8,20,array())
+#define TOMB_SPAWN_25 array("zone_chamber_0",0,8,21,array())
+#define TOMB_SPAWN_26 array("zone_chamber_0",1,8,21,array())
+#define TOMB_SPAWN_27 array("zone_chamber_0",2,8,21,array())
+#define TOMB_SPAWN_28 array("zone_chamber_0",3,8,21,array())
+#define TOMB_SPAWN_29 array("zone_chamber_3",0,8,21,array())
+#define TOMB_SPAWN_30 array("zone_chamber_3",1,8,21,array())
+#define TOMB_SPAWN_31 array("zone_chamber_3",2,8,21,array())
+#define TOMB_SPAWN_32 array("zone_chamber_3",3,8,21,array())
+
+
+#define SOLO_ZOD_FIXED_SPAWNS array(SOLO_ZOD_SPAWN_0,SOLO_ZOD_SPAWN_1,SOLO_ZOD_SPAWN_2,SOLO_ZOD_SPAWN_3,SOLO_ZOD_SPAWN_4,SOLO_ZOD_SPAWN_5)
 #define DUO_ZOD_FIXED_SPAWNS array()
-#define STALINGRAD_FIXED_SPAWNS array(STALINGRAD_SPAWN_1,STALINGRAD_SPAWN_2,STALINGRAD_SPAWN_3,STALINGRAD_SPAWN_4)
-#define FACTORY_FIXED_SPAWNS array()
+#define FACTORY_FIXED_SPAWNS array(FACTORY_SPAWN_0,FACTORY_SPAWN_1)
 #define SOLO_CASTLE_FIXED_SPAWNS array(SOLO_CASTLE_SPAWN_0,SOLO_CASTLE_SPAWN_1,SOLO_CASTLE_SPAWN_2,SOLO_CASTLE_SPAWN_3,SOLO_CASTLE_SPAWN_4,SOLO_CASTLE_SPAWN_5,SOLO_CASTLE_SPAWN_6,SOLO_CASTLE_SPAWN_7)
 #define DUO_CASTLE_FIXED_SPAWNS array(DUO_CASTLE_SPAWN_0,DUO_CASTLE_SPAWN_1,DUO_CASTLE_SPAWN_2,DUO_CASTLE_SPAWN_3,DUO_CASTLE_SPAWN_4,DUO_CASTLE_SPAWN_5,DUO_CASTLE_SPAWN_6,DUO_CASTLE_SPAWN_7,DUO_CASTLE_SPAWN_8,DUO_CASTLE_SPAWN_9,DUO_CASTLE_SPAWN_10,DUO_CASTLE_SPAWN_11)
+#define ISLAND_FIXED_SPAWNS array()
+#define STALINGRAD_FIXED_SPAWNS array(STALINGRAD_SPAWN_0,STALINGRAD_SPAWN_1,STALINGRAD_SPAWN_2,STALINGRAD_SPAWN_3)
+#define GENESIS_FIXED_SPAWNS array()
+#define PROTOTYPE_FIXED_SPAWNS array()
+#define ASYLUM_FIXED_SPAWNS array()
+#define SUMPF_FIXED_SPAWNS array()
+#define THEATER_FIXED_SPAWNS array()
+#define COSMODROME_FIXED_SPAWNS array()
+#define TEMPLE_FIXED_SPAWNS array()
+#define MOON_FIXED_SPAWNS array()
+#define TOMB_FIXED_SPAWNS array(TOMB_SPAWN_0,TOMB_SPAWN_1,TOMB_SPAWN_2,TOMB_SPAWN_3,TOMB_SPAWN_4,TOMB_SPAWN_5,TOMB_SPAWN_6,TOMB_SPAWN_7,TOMB_SPAWN_8,TOMB_SPAWN_9,TOMB_SPAWN_10,TOMB_SPAWN_11,TOMB_SPAWN_12,TOMB_SPAWN_13,TOMB_SPAWN_14,TOMB_SPAWN_15,TOMB_SPAWN_16,TOMB_SPAWN_17,TOMB_SPAWN_18,TOMB_SPAWN_19,TOMB_SPAWN_20,TOMB_SPAWN_21,TOMB_SPAWN_22,TOMB_SPAWN_23,TOMB_SPAWN_24,TOMB_SPAWN_25,TOMB_SPAWN_26,TOMB_SPAWN_27,TOMB_SPAWN_28,TOMB_SPAWN_29,TOMB_SPAWN_30,TOMB_SPAWN_31,TOMB_SPAWN_32)
 
 #define SYSTEM_NAME "fixed_z_spawns"
 function init()
 {
 	REGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOM,&random_override);
 	thread main();
-	thread fixed_zombie_speed();
 }
 
 function random_override(array)
 {
 	if (IsInArray(level.zm_loc_types["zombie_location"],array[0]) && level.available_spawn_requests.size)
 	{
-		if(!isdefined(level.zombie_force_run)) level.zombie_force_run = 0;
-		else level.zombie_force_run++;
 		spawns = ArrayCopy(level.available_spawn_requests);
-		for (i = level.available_spawn_requests.size; i > 0; i--)
+		for (i = 0; i < level.available_spawn_requests.size; i++)
 		{
-			fixed_spawn_index = array::random(spawns);
+			fixed_spawn_index = spawns[RandomInt(spawns.size)];
 			ArrayRemoveValue(spawns,fixed_spawn_index);
 			fixed_spawn = level.spawn_requests[fixed_spawn_index];
-			if ([[level.can_do_fixed_spawn_func]](array,fixed_spawn.zone,fixed_spawn.ref_point))
+			if ([[level.can_do_fixed_spawn_func]](fixed_spawn.zone))
 			{
 				should_spawn = 1;
 				foreach (f in fixed_spawn.condition_func)
@@ -113,9 +145,12 @@ function random_override(array)
 				}
 				if (should_spawn)
 				{
-					desired = [[level.next_fixed_spawn_loc_func]](array,fixed_spawn.ref_point);
+					desired = [[level.next_fixed_spawn_loc_func]](array,fixed_spawn.zone,fixed_spawn.spawner_index);
 					level notify("fixed_zombie_spawn",fixed_spawn.n_index);
-					if (isdefined(desired)) return desired;
+					if (isdefined(desired))
+					{
+						return desired;
+					}
 				}
 			}
 		}
@@ -125,25 +160,7 @@ function random_override(array)
 
 function main()
 {
-	map = GetDvarString("mapname");
-	switch(map)
-	{
-		case "zm_zod":
-			if (GetPlayers().size == 1)	level.fixed_spawns = SOLO_ZOD_FIXED_SPAWNS;
-			else level.fixed_spawns = DUO_ZOD_FIXED_SPAWNS;
-			break;
-		case "zm_factory":
-			level.fixed_spawns = FACTORY_FIXED_SPAWNS;
-			break;
-		case "zm_stalingrad":
-			level.fixed_spawns = STALINGRAD_FIXED_SPAWNS;
-			break;
-		case "zm_castle":
-			if (GetPlayers().size == 1)	level.fixed_spawns = SOLO_CASTLE_FIXED_SPAWNS;
-			else level.fixed_spawns = DUO_CASTLE_FIXED_SPAWNS;
-			break;
-	}
-
+	level.fixed_spawns = get_map_fixed_spawns();
 	level.spawn_requests = array();
 	level.available_spawn_requests = array();
 	level.can_do_fixed_spawn_func = &can_do_fixed_spawn;
@@ -177,6 +194,7 @@ function main()
 function lifetime()
 {
 	thread monitor_fixed_spawns_given();
+	level flag::wait_till("initial_blackscreen_passed");
 	for (i = 0; i < level.spawn_requests.size; i++)
 	{
 		while (level.round_number < level.spawn_requests[i].n_rnd) level waittill("between_round_over");
@@ -203,17 +221,19 @@ function write_spawn_entry(index,entry)
 {
 	s_ret = SpawnStruct();
 	s_ret.n_index = index;
-	s_ret.ref_point = entry[REF_POINT_INDEX];
-	s_ret.zone = get_zone_from_ref_point(s_ret.ref_point);
+	s_ret.zone = entry[ZONE_INDEX];
+	s_ret.spawner_index = entry[SPAWNER_INDEX];
+	s_ret.n_rnd = entry[N_RND_INDEX];
 	s_ret.n_zombie_total = entry[NUM_Z_INDEX];
 	s_ret.n_zombies = 0;
-	s_ret.n_rnd = entry[N_RND_INDEX];
 
 	s_ret.condition_func = array();
 
-	for (i = 0; i < entry[FUNC_INDEX].size; i++)
+	condition_function_array = entry[FUNC_INDEX];
+
+	for (i = 0; i < condition_function_array.size; i++)
 	{
-		func_data = entry[FUNC_INDEX][i];
+		func_data = condition_function_array[i];
 		array::add(s_ret.condition_func, SpawnStruct());
 		s_ret.condition_func[i].func = func_data[0];
 		s_ret.condition_func[i].arg = func_data[1];
@@ -222,29 +242,35 @@ function write_spawn_entry(index,entry)
 	return s_ret;
 }
 
-function can_do_fixed_spawn(a_points,arg_zone,ref_point)
+function can_do_fixed_spawn(arg_zone)
 {	
 	if (!isdefined(arg_zone)) return 1;
-	if (IsFunctionPtr(arg_zone)) zone = [[arg_zone]](ref_point);
-	else zone = arg_zone;
-	zone_spawners = zone + "_spawners";
-	b_ret = 0;
-	id = 0;
-	for (i = 0; i < a_points.size; i++)
+
+	if (IsFunctionPtr(arg_zone))
 	{
-		if (a_points[i].targetname == zone_spawners)
-		{
-			id = i;
-			b_ret = 1;
-			break;
-		}
+		zone = [[arg_zone]]();
 	}
-	return b_ret;
+	else
+	{
+		zone = arg_zone;
+	}
+
+	s_zone = level.zones[zone];
+
+	return (s_zone.is_enabled && s_zone.is_active && s_zone.is_spawning_allowed);
 }
 
-function get_spawn_loc(a_points,ref_point)
+function get_spawn_loc(array,str_zone,n_index,str_type = "zombie_location")
 {
-	return ArrayGetClosest(ref_point,a_points);
+	zone = level.zones[str_zone];
+	desired = zone.a_loc_types[str_type][n_index];
+	foreach(i,loc in array)
+	{
+		if (loc == desired)
+		{
+			return loc;
+		}
+	}
 }
 
 function get_zone_from_ref_point(ref_point)
@@ -262,65 +288,82 @@ function get_zone_from_ref_point(ref_point)
 	return zone;
 }
 
-function get_zone_from_vector_function(vector_function)
+function get_zone_from_vector_function(vector_function,a_args)
 {
-	vec = [[vector_function]]();
-	return get_zone_from_ref_point(vec);
+	vec = [[vector_function]](a_args);
+	return zm_zonemgr::get_zone_from_position(vec + VectorScale((0, 0, 1), 32), 0);
 }
 
-function fixed_zombie_speed()
+function get_map_fixed_spawns()
 {
-	while(1)
+	switch(GetDvarString("mapname"))
 	{
-		enemies = GetAISpeciesArray(level.zombie_team, "all");
-		last = 0;
-
-		foreach(enemy in enemies)
-		{
-			if (!(enemy.ignore_enemy_count) && enemy.archetype == "zombie")
-			{
-				if(level.zombie_move_speed > 1 && isdefined(enemy.zombie_move_speed_override) && zombie_utility::get_current_zombie_count() + level.zombie_total <= 3)
-				{
-					switch(GetDvarString("mapname"))
-					{
-						case "zm_zod":
-							while(!zombie_utility::get_current_zombie_count() + level.zombie_total <= 1) wait 0.1;
-							if(IsAlive(enemy))
-							{
-								enemy zombie_utility::set_zombie_run_cycle_restore_from_override();
-								enemy zombie_utility::set_zombie_run_cycle("sprint");
-							}
-						case "zm_castle":
-						case "zm_stalingrad":
-							if(level.round_number > 3)
-							{
-								if(IsAlive(enemy))
-								{
-									enemy zombie_utility::set_zombie_run_cycle_restore_from_override();
-									enemy zombie_utility::set_zombie_run_cycle("run");
-									enemy thread monitor_single_zombie_speed();
-									last = 1;
-								}
-							}
-					}
-				}
-				else if (!isdefined(enemy.zombie_move_speed_override) && enemy.zombie_move_speed != "super_sprint")
-				{
-					if (level.zombie_move_speed > 1) if(IsAlive(enemy)) enemy zombie_utility::set_zombie_run_cycle_override_value("run");
-					if (level.zombie_move_speed > 36) if(IsAlive(enemy)) enemy zombie_utility::set_zombie_run_cycle_override_value("sprint");
-				}
-			}
-		}
-
-		if(last) level waittill("between_round_over");
-
-		wait 0.05;
+		case "zm_zod":
+			if (GetPlayers().size == 1)	return SOLO_ZOD_FIXED_SPAWNS;
+			else return DUO_ZOD_FIXED_SPAWNS;
+		case "zm_factory":
+			return FACTORY_FIXED_SPAWNS;
+		case "zm_castle":
+			if (GetPlayers().size == 1)	return SOLO_CASTLE_FIXED_SPAWNS;
+			else return DUO_CASTLE_FIXED_SPAWNS;
+		case "zm_island":
+			return ISLAND_FIXED_SPAWNS;
+		case "zm_stalingrad":
+			return STALINGRAD_FIXED_SPAWNS;
+		case "zm_genesis":
+			return GENESIS_FIXED_SPAWNS;
+		case "zm_prototype":
+			return PROTOTYPE_FIXED_SPAWNS;
+		case "zm_asylum":
+			return  ASYLUM_FIXED_SPAWNS;
+		case "zm_sumpf":
+			return SUMPF_FIXED_SPAWNS;
+		case "zm_theater":
+			return THEATER_FIXED_SPAWNS;
+		case "zm_cosmodrome":
+			return COSMODROME_FIXED_SPAWNS;
+		case "zm_temple":
+			return TEMPLE_FIXED_SPAWNS;
+		case "zm_moon":
+			return MOON_FIXED_SPAWNS;
+		case "zm_tomb":
+			return TOMB_FIXED_SPAWNS;
 	}
 }
 
-function monitor_single_zombie_speed()
+
+// VECTOR FUNCTIONS - Not properly integrated - would be added instead of the zone name - no obvious utility
+function get_player_origin(a_args)
 {
-	while(!zombie_utility::get_current_zombie_count() + level.zombie_total <= 1) wait 0.1;
-	if(IsAlive(self)) self zombie_utility::set_zombie_run_cycle("sprint");
-	return;
+	role_index = a_args[0];
+	if (!isdefined(role_index)) role_index = 0;
+	player = undefined;
+	foreach (p in level.players)
+	{
+		if (isdefined(p.role) && p.role == role_index)
+		{
+			player = p;
+		}
+	}
+	if (!isdefined(player)) player = level.players[0];
+	return player.origin;
+}
+
+
+// CONDITION FUNCTIONS
+function is_flag_set(a_args) //untested
+{
+	str_flag = a_args[0];
+	if (!isdefined(str_flag)) return false;
+
+	ent_function = a_args[1];
+	ent_function_args = a_args[2];
+	if (IsFunctionPtr(ent_function)) ent = [[ent_function]](ent_function_args);
+	else ent = undefined;
+
+	if (isdefined(ent))
+	{
+		return ent flag::get(str_flag);
+	}
+	else return level flag::get(str_flag);
 }

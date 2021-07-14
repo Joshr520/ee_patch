@@ -481,8 +481,22 @@ function acquire( weapon, name )
 	   		"zm_aat_turned"
 		*/
 
-		if(IsInArray(keys, "zm_aat_fire_works")) self.aat[weapon] = "zm_aat_fire_works";
-		else self.aat[weapon] = "zm_aat_dead_wire";
+		if(!isdefined(level.fixed_aat_array))
+		{
+			level.fixed_aat_array = array("zm_aat_fire_works","zm_aat_dead_wire","zm_aat_turned");
+			level.fixed_aat_index = 0;
+		}
+
+		if(level.fixed_aat_index < level.fixed_aat_array.size && IsInArray(keys, level.fixed_aat_array[level.fixed_aat_index]))
+		{
+			self.aat[weapon] = level.fixed_aat_array[level.fixed_aat_index];
+			level.fixed_aat_index++;
+		}
+		else
+		{
+			rand = RandomInt( keys.size );
+			self.aat[weapon] = keys[rand];
+		}
 		
 		//rand = RandomInt( keys.size );
 		//self.aat[weapon] = keys[rand];

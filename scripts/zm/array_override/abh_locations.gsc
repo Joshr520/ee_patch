@@ -104,6 +104,21 @@
 #define STALINGRAD_ABH_ZONES_C array(STALINGRAD_P0_ABH_ZONES_C,STALINGRAD_P1_ABH_ZONES_C,STALINGRAD_P3_ABH_ZONES_C,STALINGRAD_P3_ABH_ZONES_C)
 #define STALINGRAD_ABH_ZONES_M array(STALINGRAD_P0_ABH_ZONES_M,STALINGRAD_P1_ABH_ZONES_M,STALINGRAD_P2_ABH_ZONES_M,STALINGRAD_P3_ABH_ZONES_M)
 
+#define TOMB_P0_ABH_ZONES_C array("zone_start_a", "zone_start_a","zone_nml_5","zone_nml_16")
+#define TOMB_P0_ABH_ZONES_M array("zone_start_a", "zone_start_a","zone_nml_5","zone_nml_16")
+
+#define TOMB_P1_ABH_ZONES_C array()
+#define TOMB_P1_ABH_ZONES_M array()
+
+#define TOMB_P2_ABH_ZONES_C array()
+#define TOMB_P2_ABH_ZONES_M array()
+
+#define TOMB_P3_ABH_ZONES_C array()
+#define TOMB_P3_ABH_ZONES_M array()
+
+#define TOMB_ABH_ZONES_C array(TOMB_P0_ABH_ZONES_C,TOMB_P1_ABH_ZONES_C,TOMB_P3_ABH_ZONES_C,TOMB_P3_ABH_ZONES_C)
+#define TOMB_ABH_ZONES_M array(TOMB_P0_ABH_ZONES_M,TOMB_P1_ABH_ZONES_M,TOMB_P2_ABH_ZONES_M,TOMB_P3_ABH_ZONES_M)
+
 #define SYSTEM_NAME "abh_locations"
 function init()
 {
@@ -231,6 +246,10 @@ function abh_zones_lists()
 			level.abh_zones_c = STALINGRAD_ABH_ZONES_C;
 			level.abh_zones_m = STALINGRAD_ABH_ZONES_M;
 			break;
+		case "zm_tomb":
+			level.abh_zones_c = TOMB_ABH_ZONES_C;
+			level.abh_zones_m = TOMB_ABH_ZONES_M;
+			break;	
 			/*
 		case "zm_island":
 			level.abh_zones_c = ISLAND_ABH_ZONES_C;
@@ -239,10 +258,6 @@ function abh_zones_lists()
 		case "zm_genesis":
 			level.abh_zones_c = GENESIS_ABH_ZONES_C;
 			level.abh_zones_m = GENESIS_ABH_ZONES_M;
-			break;
-		case "zm_tomb":
-			level.abh_zones_c = TOMB_ABH_ZONES_C;
-			level.abh_zones_m = TOMB_ABH_ZONES_M;
 			break;*/
 	}
 }

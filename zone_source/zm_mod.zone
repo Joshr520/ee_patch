@@ -25,6 +25,9 @@ scriptparsetree,scripts/zm/_zm_magicbox.gsc
 scriptparsetree,scripts/zm/_zm_magicbox.csc
 scriptparsetree,scripts/zm/craftables/_zm_craftables.gsc
 scriptparsetree,scripts/zm/craftables/_zm_craftables.csc
+scriptparsetree,scripts/zm/bgbs/zm_bgb_round_robbin.gsc
+
+scriptparsetree,scripts/zm/zm_tomb_giant_robot.gsc
 
 //main scripts
 scriptparsetree,scripts/zm/ee_patch.gsc
@@ -74,6 +77,8 @@ scriptparsetree,scripts/zm/array_override/stalingrad/modules.gsc
 scriptparsetree,scripts/zm/array_override/stalingrad/stalingrad_challenges.gsc
 
 scriptparsetree,scripts/zm/array_override/tomb/templar_target.gsc
+scriptparsetree,scripts/zm/array_override/tomb/fixed_ice_tiles.gsc
+scriptparsetree,scripts/zm/array_override/tomb/fixed_digsites.gsc
 
 scriptparsetree,scripts/zm/array_override/zod/starting_pods.gsc
 scriptparsetree,scripts/zm/array_override/zod/zod_craftable_locations.gsc
@@ -84,6 +89,7 @@ scriptparsetree,scripts/zm/script_override/fixed_random_perks.gsc
 scriptparsetree,scripts/zm/script_override/forced_drops.gsc
 scriptparsetree,scripts/zm/script_override/craftable_locations.gsc
 scriptparsetree,scripts/zm/script_override/bgb_machine_override.gsc
+scriptparsetree,scripts/zm/script_override/tomb/fixed_crypt_discs.gsc
 
 // VARIABLE OVERRIDE
 
@@ -98,7 +104,7 @@ scriptparsetree,scripts/zm/variable_override/fixed_meatball_count.gsc
 scriptparsetree,scripts/zm/variable_override/zod/idgun_pieces.gsc
 scriptparsetree,scripts/zm/variable_override/zod/zod_margwa_rounds.gsc
 
-scriptparsetree,scripts/zm/variable_override/stalingrad_overrides.gsc
+scriptparsetree,scripts/zm/variable_override/stalingrad/stalingrad_overrides.gsc
 
 scriptparsetree,scripts/zm/variable_override/island_overrides.gsc
 
@@ -107,10 +113,14 @@ scriptparsetree,scripts/zm/variable_override/island_overrides.gsc
 scriptparsetree,scripts/zm/hud/hud_common.gsc
 scriptparsetree,scripts/zm/hud/hud_common.gsh
 scriptparsetree,scripts/zm/hud/zombie_counter.gsc
-scriptparsetree,scripts/zm/hud/zombie_counter.gsh
+scriptparsetree,scripts/zm/hud/zm_hud_ee_patch.gsc
 //scriptparsetree,scripts/zm/hud/enemy_counter.gsc
 //scriptparsetree,scripts/zm/hud/enemy_counter.gsh
-scriptparsetree,scripts/zm/hud/zombie_timer.gsc
 scriptparsetree,scripts/zm/hud/rocket_test_timer.gsc
 //scriptparsetree,scripts/zm/hud/bot_testing.gsc
+
+// UI
+
+rawfile,ui/uieditor/menus/hud/t7hud_zm_ee_patch.lua
+rawfile,ui/uieditor/widgets/hud/zm_ee_patch/zombiecounter.lua
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -18,7 +18,7 @@ function init()
 #define GEN2_SHELF 1
 #define GEN2_TABLE 2
 
-#define VINYL_ICE GEN2_TABLE
+#define VINYL_ICE GEN2_SHELF
 
 #define GEN5_BOXES 0
 #define GEN5_TUNNEL 1
@@ -30,7 +30,7 @@ function init()
 #define GEN4_TUNNEL 1
 #define GEN4_WAGON 2
 
-#define VINYL_LIGHTNING GEN4_JUG
+#define VINYL_LIGHTNING GEN4_TUNNEL
 
 #define GEN6_BOXES 0
 #define GEN6_TABLET 1
