@@ -17,6 +17,7 @@ scriptparsetree,scripts/zm/_zm_powerups.gsc
 scriptparsetree,scripts/zm/_zm_utility.csc
 scriptparsetree,scripts/zm/_zm_utility.gsc
 scriptparsetree,scripts/zm/array_override/abh_locations.gsc
+scriptparsetree,scripts/zm/array_override/abh_locations.gsh
 scriptparsetree,scripts/zm/array_override/array_override_common.gsc
 scriptparsetree,scripts/zm/array_override/array_override_common.gsh
 scriptparsetree,scripts/zm/array_override/bgb_common.gsc
@@ -50,7 +51,6 @@ scriptparsetree,scripts/zm/array_override/tomb/fixed_ice_tiles.gsc
 scriptparsetree,scripts/zm/array_override/tomb/templar_target.gsc
 scriptparsetree,scripts/zm/array_override/zod/starting_pods.gsc
 scriptparsetree,scripts/zm/array_override/zod/zod_craftable_locations.gsc
-scriptparsetree,scripts/zm/bgbs/zm_bgb_round_robbin.gsc
 scriptparsetree,scripts/zm/craftables/_zm_craftables.csc
 scriptparsetree,scripts/zm/craftables/_zm_craftables.gsc
 scriptparsetree,scripts/zm/ee_patch.gsc

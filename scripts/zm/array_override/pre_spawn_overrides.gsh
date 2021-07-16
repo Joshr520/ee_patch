@@ -1,3 +1,17 @@
+#insert scripts\zm\array_override\array_override_common.gsh;
+
+#define IS_PLAYER(__player) (isdefined(__player) && IsPlayer(__player))
+#define ADD(_array,val) _array[_array.size] = val
+
+#define CHECK_PLAYER_SPECIFIC_OVERRIDE(__arrayName,__listName) __arrayName = array();\
+	if (IS_PLAYER(self) && isdefined(self.__listName)) __arrayName = self.__listName;\
+	__arrayName = ArrayCombine(__arrayName, level.__listName,0,1);
+
+#define ARRAY_OVERRIDES(__listName) CHECK_PLAYER_SPECIFIC_OVERRIDE(overrides,__listName)\
+	foreach (override in overrides){\
+		ret = [[override]](array);\
+		if (isdefined(ret)) return ret;}
+
 //RANDOM overrides
 #define ZOD_INFINITE_POWERUP "zod_infinite_powerup"
 function zod_infinite_powerup(array)
@@ -229,11 +243,36 @@ function autoexec pre_spawn_overrides()
 
 function pre_spawn_overrides_think()
 {
-	level endon("initial_blackscreen_passed");
+	level endon("start_zombie_round_logic");
+	//level endon("all_players_spawned");
 	while(1)
 	{
-		level waittill("pre_spawn_override_done",name,b_type);
-		if (b_type) ArrayRemoveIndex(level.array_randomize_override,name,1);
-		else ArrayRemoveIndex(level.array_random_override,name);
+		level waittill("pre_spawn_override_done",str_name,type);
+		if (type) ArrayRemoveIndex(level.array_randomize_override,str_name,1);
+		else ArrayRemoveIndex(level.array_random_override,str_name,1);
+	}
+}
+
+function unregister_override(str_name,type)
+{
+	level.unregister_delay_time++;
+	wait(level.unregister_delay_time*0.1);
+	level notify("pre_spawn_override_done",str_name,type);
+}
+
+function common_override_cleanup(a_overrides)
+{
+	level waittill("start_zombie_round_logic");
+	foreach (array in a_overrides)
+	{
+		switch(array[1])
+		{
+			case ARRAY_RANDOM:
+				ArrayRemoveIndex(level.array_random_override,array[0],1);
+				break;
+			case ARRAY_RANDOMIZE:
+				ArrayRemoveIndex(level.array_randomize_override,array[0],1);
+				break;
+		}
 	}
 }

@@ -1,216 +1,125 @@
 #using scripts\codescripts\struct;
 #using scripts\shared\array_shared;
+#using scripts\shared\clientfield_shared;
+#using scripts\shared\callbacks_shared;
 #using scripts\shared\flag_shared;
+#using scripts\shared\util_shared;
 #using scripts\zm\array_override\bgb_common;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\array_override\array_override_common;
 
 #insert scripts\zm\array_override\array_override_common.gsh;
+#insert scripts\zm\array_override\abh_locations.gsh;
+#insert scripts\shared\shared.gsh;
 
 #namespace abh_locations;
 
-#define LOBBY_INDEX bgb_common::get_lobby_index()
-
-// Possible ABH locations by zone on SOE
-/* 
-"zone_start" 			- starting area
-"zone_theater_B" 		- theater outside train
-"zone_theater_high_A"	- theater by perk machine
-"zone_theater_junction" - theater district entrance
-"zone_slums_D" 			- slums down by the HVK
-"zone_slums_high_B" 	- slums by perk machine/egg statue
-"zone_slums_junction"	- slums district entrance
-"zone_canal_D"			- canal by train outside ruby rabbit
-"zone_canal_high_A"		- canal by perk machine
-"zone_canal_junction"	- canal district entrance
-"zone_subway_central"	- underground by the sword locker
-"zone_subway_pap_ritual"- pap room by ritual table
-*/
-
-#define ZOD_P0_ABH_ZONES_C array("zone_canal_D","zone_subway_central","zone_start","zone_theater_high_A","zone_slums_D","zone_start","zone_canal_junction","zone_theater_high_A","zone_subway_central")
-#define ZOD_P0_ABH_ZONES_M array("zone_canal_D","zone_subway_central","zone_start","zone_theater_high_A","zone_slums_D","zone_start","zone_canal_junction","zone_theater_high_A","zone_subway_central")
-
-#define ZOD_P1_ABH_ZONES_C array()
-#define ZOD_P1_ABH_ZONES_M array()
-
-#define ZOD_P2_ABH_ZONES_C array()
-#define ZOD_P2_ABH_ZONES_M array()
-
-#define ZOD_P3_ABH_ZONES_C array()
-#define ZOD_P3_ABH_ZONES_M array()
-
-#define ZOD_ABH_ZONES_C array(ZOD_P0_ABH_ZONES_C,ZOD_P1_ABH_ZONES_C,ZOD_P2_ABH_ZONES_C,ZOD_P3_ABH_ZONES_C)
-#define ZOD_ABH_ZONES_M array(ZOD_P0_ABH_ZONES_M,ZOD_P1_ABH_ZONES_M,ZOD_P2_ABH_ZONES_M,ZOD_P3_ABH_ZONES_M)
-
-// Possible ABH locations by zone on DE
-/*
-"zone_start"					- starting area
-"zone_tram_to_gatehouse"		- outside spawn behind gatehouse
-"zone_lower_gatehouse"			- gatehouse next to doubletap
-"zone_lower_courtyard"			- lower courtyard in front of gatehouse
-"zone_lower_courtyard_upper"	- lower courtyard on the bridge
-"zone_gatehouse"				- top gatehouse by wundersphere
-"zone_rooftop"					- next to pap by death ray
-"zone_clocktower"				- in the clocktower
-"zone_courtyard_edge"			- next to gumball machine outside clocktower
-"zone_great_hall_upper_left"	- great hall staircase behind speedcola
-"zone_great_hall_upper"			- great hall door leading to power
-"zone_courtyard"				- staircase leading to great hall
-"zone_tram_to_subclocktower"	- path leading from mulekick to courtyard
-"zone_undercroft_pap_hall"		- undercroft door leading to lower corutyard
-"zone_undercroft"				- in front of undercroft dragon
-"zone_v10_pad"					- next to teleporter at rocket test
-"zone_v10_pad_door"				- outside rocket test
-*/
-
-#define CASTLE_P0_ABH_ZONES_C array("zone_rooftop","zone_undercroft","zone_gatehouse","zone_undercroft","zone_rooftop","zone_clocktower")
-#define CASTLE_P0_ABH_ZONES_M array("zone_rooftop","zone_undercroft","zone_gatehouse","zone_undercroft","zone_rooftop","zone_clocktower")
-
-#define CASTLE_P1_ABH_ZONES_C array("zone_v10_pad","zone_tram_to_subclocktower","zone_tram_to_subclocktower")
-#define CASTLE_P1_ABH_ZONES_M array("zone_v10_pad","zone_tram_to_subclocktower","zone_tram_to_subclocktower")
-
-#define CASTLE_P2_ABH_ZONES_C array()
-#define CASTLE_P2_ABH_ZONES_M array()
-
-#define CASTLE_P3_ABH_ZONES_C array()
-#define CASTLE_P3_ABH_ZONES_M array()
-
-#define CASTLE_ABH_ZONES_C array(CASTLE_P0_ABH_ZONES_C,CASTLE_P1_ABH_ZONES_C,CASTLE_P2_ABH_ZONES_C,CASTLE_P3_ABH_ZONES_C)
-#define CASTLE_ABH_ZONES_M array(CASTLE_P0_ABH_ZONES_M,CASTLE_P1_ABH_ZONES_M,CASTLE_P2_ABH_ZONES_M,CASTLE_P3_ABH_ZONES_M)
-
-// Possible ABH locations by zone on GK
-/*
-"start_A_zone"						- first half of starting area
-"department_store_floor2_A_zone"	- second floor of department store by the stairs leading up
-"bunker_zone"						- bunker by shield craftable
-"judicial_A_zone"					- dragon commmand by sophia
-"factory_C_zone"					- tank factory by double tap
-"library_B_zone"					- supply by the gumball machine
-"pavlovs_B_zone"					- hatchery by pap
-*/
-
-#define STALINGRAD_P0_ABH_ZONES_C array("library_B_zone", "bunker_zone", "pavlovs_B_zone", "start_A_zone", "judicial_A_zone", "department_store_floor2_A_zone", "factory_C_zone", "start_A_zone", "pavlovs_B_zone","judicial_A_zone","start_A_zone")
-#define STALINGRAD_P0_ABH_ZONES_M array("library_B_zone", "bunker_zone", "pavlovs_B_zone", "start_A_zone", "judicial_A_zone", "department_store_floor2_A_zone", "factory_C_zone", "start_A_zone", "pavlovs_B_zone","judicial_A_zone","start_A_zone")
-
-#define STALINGRAD_P1_ABH_ZONES_C array()
-#define STALINGRAD_P1_ABH_ZONES_M array()
-
-#define STALINGRAD_P2_ABH_ZONES_C array()
-#define STALINGRAD_P2_ABH_ZONES_M array()
-
-#define STALINGRAD_P3_ABH_ZONES_C array()
-#define STALINGRAD_P3_ABH_ZONES_M array()
-
-#define STALINGRAD_ABH_ZONES_C array(STALINGRAD_P0_ABH_ZONES_C,STALINGRAD_P1_ABH_ZONES_C,STALINGRAD_P3_ABH_ZONES_C,STALINGRAD_P3_ABH_ZONES_C)
-#define STALINGRAD_ABH_ZONES_M array(STALINGRAD_P0_ABH_ZONES_M,STALINGRAD_P1_ABH_ZONES_M,STALINGRAD_P2_ABH_ZONES_M,STALINGRAD_P3_ABH_ZONES_M)
-
-#define TOMB_P0_ABH_ZONES_C array("zone_start_a", "zone_start_a","zone_nml_5","zone_nml_16")
-#define TOMB_P0_ABH_ZONES_M array("zone_start_a", "zone_start_a","zone_nml_5","zone_nml_16")
-
-#define TOMB_P1_ABH_ZONES_C array()
-#define TOMB_P1_ABH_ZONES_M array()
-
-#define TOMB_P2_ABH_ZONES_C array()
-#define TOMB_P2_ABH_ZONES_M array()
-
-#define TOMB_P3_ABH_ZONES_C array()
-#define TOMB_P3_ABH_ZONES_M array()
-
-#define TOMB_ABH_ZONES_C array(TOMB_P0_ABH_ZONES_C,TOMB_P1_ABH_ZONES_C,TOMB_P3_ABH_ZONES_C,TOMB_P3_ABH_ZONES_C)
-#define TOMB_ABH_ZONES_M array(TOMB_P0_ABH_ZONES_M,TOMB_P1_ABH_ZONES_M,TOMB_P2_ABH_ZONES_M,TOMB_P3_ABH_ZONES_M)
-
-#define SYSTEM_NAME "abh_locations"
-function init()
-{
-	REGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOM,&random_override);
-	thread main();
-}
-
 function random_override(array)
 {
-	if (level flag::get("initial_blackscreen_passed") && !level.abh_done)
+	if (array[0].targetname == "player_respawn_point")
 	{
-		if (array[0].targetname == "player_respawn_point")
+		if (!self common_validation()) return;
+		if (isdefined(level.abh_validation) && !self [[level.abh_validation]]()) return;
+		if (isdefined(level.abh_point_lookup_override))
 		{
-			if(self IsSwitchingWeapons()) self waittill("weapon_change_complete", weapon);
-
-			pl = ArraySort(level.activeplayers, self.origin, 1)[0];
-
-			id = pl bgb_common::get_lobby_index();
-			
-			/*foreach(abh in level.desired_zones[id])
+			point = [[level.abh_point_lookup_override]](self.next_abh);
+		}
+		if (!isdefined(point))
+		{
+			foreach (s_point in array)
 			{
-				IPrintLnBold(abh);
-			}*/
-			
-			// for each respawn point, check if it is in the zone that we want to teleport to.
-			foreach (sp in array)
-			{
-				//level.abh_zone_function gets the zone name from the given coordinates
-				zone = zm_zonemgr::get_zone_from_position(sp.origin + VectorScale((0, 0, 1), 32), 0);
+				zone = zm_zonemgr::get_zone_from_position(s_point.origin + (0,0,32), 0);
 
 				// if this is the next zone in our predetermined locations list, return this respawn point so the player tps there
-				if (zone == level.desired_zones[id][level.abh_index[id]])
+				if (zone == self.next_abh)
 				{
-					//notify the custom abh_locations script that abh has been used
-					level notify("next_abh_zone_reached",id);
-					return sp;
+					point = s_point;
+					break;
 				}
 			}
+		}
+		if (isdefined(point) && IsInArray(array,point) || !IS_TRUE(self.is_next_abh_persistent))
+		{
+			self notify("next_abh_zone_reached",1);
+			return point;
 		}
 	}
 }
 
+#define USING_ROLES 0
+
+#define SYSTEM_NAME "abh_locations"
 function main()
 {
-	//monitor the bgb cycle to see if Megas are being used, if so it will set predetermined locations array to be the Megas one
-	abh_zones_lists();
-	thread abh_locations_using_megas();
+	level endon("end_game");
 
-	//since the array script doesn't include zm_zonemgr script, store the function (ptr) from the script that is needed in a level var
-	//level.abh_zone_function = &zm_zonemgr::get_zone_from_position;
+	level.b_using_player_roles[SYSTEM_NAME] = USING_ROLES;
 
-	//flag to set when we've teleported to all the desired abh locations
-	level.abh_done = false;
-
-	//set the locations array for the correct map in the level var
+	MAP_ASSIGN_LIST_2_RETURN(level.abh_zones_m,level.abh_zones_c)
+	MAP_ASSIGN_FUNC(level.abh_validation)
 	level.desired_zones = level.abh_zones_c;
 
-	level.abh_index = array(0,0,0,0);
+	thread abh_locations_using_megas();
 
-	level flag::wait_till("bgb_megas_done");
+	callback::on_connect(&monitor_abh);
 
-	while (1)
-	{
-		//get the next desired abh location (used in the array_shared script)
-		level.next_abh = level.desired_zones[level.abh_index];
-
-		//the array_shared script will notify the level when the player has used ABH
-		level waittill("next_abh_zone_reached",id);
-		wait 2;
-
-		level.abh_index[id]++;
-		if (level.abh_index >= level.desired_zones.size) break;
-	}
-
-	level.abh_done = true;
-
-	UNREGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOM);
+	if (GetDvarString("mapname") == "zm_tomb") thread init_tomb_abh();
 }
 
-function abh_players_think()
+function init_tomb_abh()
 {
-	level flag::wait_till("initial_players_connected");
-	foreach (p in GetPlayers())	p thread monitor_abh();
+	points = struct::get_array("player_respawn_point","targetname");
+	level.zoneless_abh_points = array();
+	level.zoneless_abh_points["zone_nml_farm"] = points[0];
+	level.zoneless_abh_points["zone_nml_11"] = points[1];
+	level.zoneless_abh_points["zone_nml_3"] = points[2];
+	level.zoneless_abh_points["zone_nml_5"] = points[3];
+	level.zoneless_abh_points["zone_nml_16"] = points[4];
+	level.zoneless_abh_points["zone_village_0"] = points[5];
+	level.zoneless_abh_points["zone_village_1"] = points[6];
+	level.zoneless_abh_points["zone_village_2"] = points[7];
+	level.zoneless_abh_points["zone_chamber_0"] = points[8];
+	level.zoneless_abh_points["zone_start"] = points[9];
+	level.zoneless_abh_points["zone_bunker_2"] = points[10];
+	level.zoneless_abh_points["zone_bunker_5b"] = points[11];
+	level.zoneless_abh_points["zone_bunker_tank_c"] = points[12];
+	level.zoneless_abh_points["zone_bunker_tank_a1"] = points[13];
+	level.zoneless_abh_points["zone_bunker_tank_e1"] = points[14];
+	level.zoneless_abh_points["zone_bunker_3a"] = points[15];
+	level.zoneless_abh_points["zone_bunker_1"] = points[16];
+	level.zoneless_abh_points["zone_bunker_4c"] = points[17];
+	level.zoneless_abh_points["zone_start_b"] = points[18];
+	level.zoneless_abh_points["zone_start_a"] = points[19];
+
+	level.abh_point_lookup_override = &abh_point_lookup;
+}
+function abh_point_lookup(str_name)
+{
+	return level.zoneless_abh_points[str_name];
 }
 
 function monitor_abh()
 {
-	self.abh_index = 0;
-	self thread monitor_role();
-	while(1)
+	level endon("end_game");
+	self endon("disconnect");
+
+	level flag::wait_till("start_zombie_round_logic");
+
+	self waittill("bgb_update_give_zm_bgb_anywhere_but_here");
+	if (IS_TRUE(level.b_using_player_roles[SYSTEM_NAME]))
 	{
-		self.next_abh = level.desired_zones[self.role][self.abh_index];
+		self flag::wait_till("player_role_determined");
+		role = self.role;
+	}
+	else role = self GetEntityNumber();
+
+	self REGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOM,&random_override);
+
+	self.abh_index = 0;
+
+	while(self.abh_index < level.desired_zones[role].size)
+	{
+		self.next_abh = level.desired_zones[role][self.abh_index];
 		self waittill("next_abh_zone_reached",b_increment);
 		if (b_increment)
 		{
@@ -218,56 +127,104 @@ function monitor_abh()
 			self.abh_index++;
 		}
 	}
-}
-
-function monitor_role()
-{
-	self.role = 0;
-
-}
-
-function abh_zones_lists()
-{
-	level.abh_zones_m = undefined;
-	level.abh_zones_c = undefined;
-	switch (GetDvarString("mapname"))
-	{
-		case "zm_zod":
-			level.abh_zones_c = ZOD_ABH_ZONES_C;
-			level.abh_zones_m = ZOD_ABH_ZONES_M;
-			break;
-		case "zm_factory":
-			break;
-		case "zm_castle":
-			level.abh_zones_c = CASTLE_ABH_ZONES_C;
-			level.abh_zones_m = CASTLE_ABH_ZONES_M;
-			break;
-		case "zm_stalingrad":
-			level.abh_zones_c = STALINGRAD_ABH_ZONES_C;
-			level.abh_zones_m = STALINGRAD_ABH_ZONES_M;
-			break;
-		case "zm_tomb":
-			level.abh_zones_c = TOMB_ABH_ZONES_C;
-			level.abh_zones_m = TOMB_ABH_ZONES_M;
-			break;	
-			/*
-		case "zm_island":
-			level.abh_zones_c = ISLAND_ABH_ZONES_C;
-			level.abh_zones_m = ISLAND_ABH_ZONES_M;
-			break;
-		case "zm_genesis":
-			level.abh_zones_c = GENESIS_ABH_ZONES_C;
-			level.abh_zones_m = GENESIS_ABH_ZONES_M;
-			break;*/
-	}
+	self UNREGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOM);
 }
 
 function abh_locations_using_megas()
 {
-	level flag::wait_till("bgb_megas_done");
+	level flag::wait_till("bgb_loadout_determined");
 
 	if (level flag::get("using_megas"))
 	{
 		level.desired_zones = level.abh_zones_m;
 	}
+}
+
+// WAITING
+function wait_for_any_player_has_abh()
+{
+	callback::on_connect(&wait_till_has_abh);
+
+	level waittill("any_player_has_abh");
+
+	callback::remove_on_connect(&wait_till_has_abh);
+}
+
+function wait_till_has_abh()
+{
+	level endon("end_game");
+	level endon("any_player_has_abh");
+	self endon("disconnect");
+
+	self waittill("bgb_update_give_zm_bgb_anywhere_but_here");
+
+	level notify("any_player_has_abh");
+}
+
+// VAlIDATION
+function common_validation()
+{
+	if (self IsSwitchingWeapons()) return 0;
+
+	return 1;
+}
+function zod_validation()
+{
+	if (IS_TRUE(self.altbody)) return 0;
+
+	return 1;
+}
+
+function factory_validation()
+{
+	if (IS_TRUE(self.b_teleporting)) return 0;
+	return 1;
+}
+
+function castle_validation()
+{
+	if (IS_TRUE(self.b_teleporting)) return 0;
+	if (self clientfield::get_to_player("flinger_flying_postfx")) return 0;
+	if(level flag::get("boss_fight_begin") && !level flag::get("boss_fight_completed")) return 0;
+
+	return 1;
+}
+
+function island_validation()
+{
+	return 1;
+}
+
+function stalingrad_validation()//incomplete
+{
+	if (level flag::get("lockdown_active")) return 0;
+
+	return 1;
+}
+
+function genesis_validation()
+{
+	if (IS_TRUE(self.b_teleporting)) return 0;
+	if (self clientfield::get_to_player("flinger_flying_postfx")) return 0;
+	if(level flag::get("boss_fight_begin") && !level flag::get("boss_fight_completed")) return 0;
+	if(self IsTouching(GetEnt("samanthas_room_zone", "targetname"))) return 0;
+	if(level flag::get("boss_fight") || level flag::get("arena_occupied_by_player")) return 0;
+
+	return 1;
+}
+
+function tomb_validation()
+{
+	if(IsSubStr(self.zone_name, "zone_chamber")) return 0;
+	if(IS_TRUE(self.b_already_on_tank)) return 0;
+	if (isdefined(self.in_giant_robot_head)) return 0;
+	if (isdefined(self.giant_robot_transition)) return 0;
+	if(self.is_stomped === 1) return 0;
+
+	return 1;
+}
+
+function default_validation()
+{
+	return 1;
 }

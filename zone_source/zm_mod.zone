@@ -25,7 +25,6 @@ scriptparsetree,scripts/zm/_zm_magicbox.gsc
 scriptparsetree,scripts/zm/_zm_magicbox.csc
 scriptparsetree,scripts/zm/craftables/_zm_craftables.gsc
 scriptparsetree,scripts/zm/craftables/_zm_craftables.csc
-scriptparsetree,scripts/zm/bgbs/zm_bgb_round_robbin.gsc
 
 scriptparsetree,scripts/zm/zm_tomb_giant_robot.gsc
 
@@ -45,6 +44,7 @@ scriptparsetree,scripts/zm/array_override/array_override_common.gsh
 scriptparsetree,scripts/zm/array_override/pre_spawn_overrides.gsh
 
 scriptparsetree,scripts/zm/array_override/abh_locations.gsc
+scriptparsetree,scripts/zm/array_override/abh_locations.gsh
 scriptparsetree,scripts/zm/array_override/bgb_common.gsc
 scriptparsetree,scripts/zm/array_override/bgb_cycle.gsc
 scriptparsetree,scripts/zm/array_override/bgb_cycle.gsh

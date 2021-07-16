@@ -3,6 +3,7 @@
 #using scripts\zm\_zm_spawner;
 #using scripts\zm\_zm_zonemgr;
 #using scripts\shared\clientfield_shared;
+#using scripts\codescripts\struct;
 
 //custom scripts
 
@@ -94,7 +95,7 @@ function array_override()
 	thread bgb_common::using_megas();
 
 	bgb_cycle::init();
-	abh_locations::init();
+	abh_locations::main();
 
 	fixed_ai_spawns::init();
 	fixed_margwa_spawns::init();
@@ -251,6 +252,13 @@ function debug()
 	level.player_starting_points = 50000;
 
 	level flag::wait_till("initial_blackscreen_passed");
+
+	respawns = struct::get_array("player_respawn_point", "targetname");
+	foreach(respawn in respawns)
+	{
+		IPrintLnBold(respawn);
+		wait 3;
+	}
 
 	/*while(1)
 	{

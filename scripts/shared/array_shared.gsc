@@ -753,11 +753,7 @@ function flag_wait_any( array, str_flag )
 
 function random( array )
 {
-	foreach (override in level.array_random_override)
-	{
-		ret = [[override]](array);
-		if (isdefined(ret)) return ret;
-	}
+	ARRAY_OVERRIDES(array_random_override)
 
 	if ( array.size > 0 )
 	{
@@ -776,16 +772,8 @@ function random( array )
 @/
 function randomize( array )
 {
-	foreach (index, override in level.array_randomize_override)
-	{
-		a_ret = [[override]](array);
-		if (isdefined(a_ret)) 
-		{
-			//IPrintLnBold(index + " Manipulated");
-			return a_ret;
-		}
-	}
-	
+	ARRAY_OVERRIDES(array_randomize_override)
+
 	for ( i = 0; i < array.size; i++ )
 	{
 		j = RandomInt( array.size );
