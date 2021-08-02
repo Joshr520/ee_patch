@@ -79,7 +79,7 @@
 function start()
 {
 	//thread bot_testing::bot();
-	thread debug();
+	//thread debug();
 	//thread stalingrad_debug();
 	//thread zone_monitor_name();
 	//thread zone_monitor_origin();
