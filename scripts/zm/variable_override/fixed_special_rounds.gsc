@@ -71,7 +71,7 @@ function castle_dog_rounds()
 	i = 0;
 	while (i < dog_rounds.size)
 	{
-		level.next_dog_round = dog_rounds[i];
+		//level.next_dog_round = dog_rounds[i];
 		while(level.round_number <= dog_rounds[i]) level waittill("end_of_round");
 		i++;
 	}

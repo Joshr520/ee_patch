@@ -79,7 +79,7 @@
 function start()
 {
 	//thread bot_testing::bot();
-	//thread debug();
+	thread debug();
 	//thread stalingrad_debug();
 	//thread zone_monitor_name();
 	//thread zone_monitor_origin();
@@ -253,11 +253,10 @@ function debug()
 
 	level flag::wait_till("initial_blackscreen_passed");
 
-	respawns = struct::get_array("player_respawn_point", "targetname");
-	foreach(respawn in respawns)
+	while(1)
 	{
-		IPrintLnBold(respawn);
-		wait 3;
+		IPrintLnBold("Dogs: " + level.next_dog_round);
+		wait 5;
 	}
 
 	/*while(1)

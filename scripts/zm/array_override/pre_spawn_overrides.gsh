@@ -198,7 +198,13 @@ function autoexec pre_spawn_overrides()
 	level.array_random_override = array();
 	level.array_randomize_override = array();
 
+	a_overrides = array();
+
+	level.unregister_delay_time = 0;
+
+	// for overrides that apply to multiple maps but not all maps, we add the name to a list that is passed to the cleanup function which makes sure the override gets unregistered
 	level.array_randomize_override[CHARACTERS] = &characters;
+	ADD(a_overrides,array(CHARACTERS,ARRAY_RANDOMIZE));
 
 	switch(GetDvarString("mapname"))
 	{
@@ -239,6 +245,8 @@ function autoexec pre_spawn_overrides()
 	}
 	
 	thread pre_spawn_overrides_think();
+
+	thread common_override_cleanup(a_overrides);
 }
 
 function pre_spawn_overrides_think()

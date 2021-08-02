@@ -1,3 +1,7 @@
+#define TRY_TOKEN ";"
+#define TRY(zone) TRY_TOKEN+zone
+#define ZONE_NAME_INDEX 0
+
 #define EMPTY array(array(),array(),array(),array())
 
 // Possible ABH locations by zone on SOE

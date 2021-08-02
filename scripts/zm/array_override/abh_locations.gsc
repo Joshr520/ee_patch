@@ -8,9 +8,9 @@
 #using scripts\zm\_zm_zonemgr;
 #using scripts\zm\array_override\array_override_common;
 
+#insert scripts\shared\shared.gsh;
 #insert scripts\zm\array_override\array_override_common.gsh;
 #insert scripts\zm\array_override\abh_locations.gsh;
-#insert scripts\shared\shared.gsh;
 
 #namespace abh_locations;
 
@@ -20,6 +20,7 @@ function random_override(array)
 	{
 		if (!self common_validation()) return;
 		if (isdefined(level.abh_validation) && !self [[level.abh_validation]]()) return;
+		point = undefined;
 		if (isdefined(level.abh_point_lookup_override))
 		{
 			point = [[level.abh_point_lookup_override]](self.next_abh);
@@ -28,7 +29,7 @@ function random_override(array)
 		{
 			foreach (s_point in array)
 			{
-				zone = zm_zonemgr::get_zone_from_position(s_point.origin + (0,0,32), 0);
+				zone = zm_zonemgr::get_zone_from_position(s_point.origin + (0,0,32), 1);
 
 				// if this is the next zone in our predetermined locations list, return this respawn point so the player tps there
 				if (zone == self.next_abh)
@@ -38,10 +39,11 @@ function random_override(array)
 				}
 			}
 		}
-		if (isdefined(point) && IsInArray(array,point) || !IS_TRUE(self.is_next_abh_persistent))
+		b_valid = isdefined(point) && IsInArray(array,point);
+		if (b_valid || !IS_TRUE(self.is_next_abh_persistent))
 		{
 			self notify("next_abh_zone_reached",1);
-			return point;
+			if (b_valid) return point;
 		}
 	}
 }
@@ -108,18 +110,18 @@ function monitor_abh()
 	self waittill("bgb_update_give_zm_bgb_anywhere_but_here");
 	if (IS_TRUE(level.b_using_player_roles[SYSTEM_NAME]))
 	{
-		self flag::wait_till("player_role_determined");
-		role = self.role;
+		if (!self flag::get("player_role_determined")) self waittill("player_role_determined");
 	}
-	else role = self GetEntityNumber();
+	else if (!isdefined(self.role)) self.role = self GetEntityNumber();
 
 	self REGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOM,&random_override);
 
 	self.abh_index = 0;
 
-	while(self.abh_index < level.desired_zones[role].size)
+	while(self.abh_index < level.desired_zones[self.role].size)
 	{
-		self.next_abh = level.desired_zones[role][self.abh_index];
+		self.next_abh = level.desired_zones[self.role][self.abh_index];
+		thread check_next_abh_persistent();
 		self waittill("next_abh_zone_reached",b_increment);
 		if (b_increment)
 		{
@@ -130,6 +132,18 @@ function monitor_abh()
 	self UNREGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOM);
 }
 
+function check_next_abh_persistent()
+{
+	pers_prefix = TRY_TOKEN;
+	if (IsSubStr(self.next_abh,pers_prefix))
+	{
+		self.is_next_abh_persistent = false;
+		zone_name = StrTok(self.next_abh,pers_prefix)[ZONE_NAME_INDEX];
+		self.next_abh = zone_name;
+	}
+	else self.is_next_abh_persistent = true;
+}
+
 function abh_locations_using_megas()
 {
 	level flag::wait_till("bgb_loadout_determined");
@@ -138,27 +152,6 @@ function abh_locations_using_megas()
 	{
 		level.desired_zones = level.abh_zones_m;
 	}
-}
-
-// WAITING
-function wait_for_any_player_has_abh()
-{
-	callback::on_connect(&wait_till_has_abh);
-
-	level waittill("any_player_has_abh");
-
-	callback::remove_on_connect(&wait_till_has_abh);
-}
-
-function wait_till_has_abh()
-{
-	level endon("end_game");
-	level endon("any_player_has_abh");
-	self endon("disconnect");
-
-	self waittill("bgb_update_give_zm_bgb_anywhere_but_here");
-
-	level notify("any_player_has_abh");
 }
 
 // VAlIDATION
