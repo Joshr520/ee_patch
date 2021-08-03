@@ -97,8 +97,8 @@
 #define STALINGRAD array(STALINGRAD_P0_ABH_ZONES_C,STALINGRAD_P1_ABH_ZONES_C,STALINGRAD_P3_ABH_ZONES_C,STALINGRAD_P3_ABH_ZONES_C)
 #define STALINGRAD_2 array(STALINGRAD_P0_ABH_ZONES_M,STALINGRAD_P1_ABH_ZONES_M,STALINGRAD_P2_ABH_ZONES_M,STALINGRAD_P3_ABH_ZONES_M)
 
-#define TOMB_P0_ABH_ZONES_C array("zone_start_a", "zone_start_a","zone_nml_farm","zone_nml_16","zone_nml_farm","zone_nml_16")
-#define TOMB_P0_ABH_ZONES_M array("zone_start_a", "zone_start_a","zone_nml_farm","zone_nml_16","zone_nml_farm","zone_nml_16")
+#define TOMB_P0_ABH_ZONES_C array("zone_start_a", "zone_start_a","zone_nml_5","zone_nml_16","zone_nml_5","zone_nml_16")
+#define TOMB_P0_ABH_ZONES_M array("zone_start_a", "zone_start_a","zone_nml_5","zone_nml_16","zone_nml_5","zone_nml_16")
 
 #define TOMB_P1_ABH_ZONES_C array()
 #define TOMB_P1_ABH_ZONES_M array()

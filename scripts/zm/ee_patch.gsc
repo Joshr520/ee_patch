@@ -253,12 +253,6 @@ function debug()
 
 	level flag::wait_till("initial_blackscreen_passed");
 
-	while(1)
-	{
-		IPrintLnBold("Dogs: " + level.next_dog_round);
-		wait 5;
-	}
-
 	/*while(1)
 	{
 		enemies = GetAISpeciesArray(level.zombie_team, "all");

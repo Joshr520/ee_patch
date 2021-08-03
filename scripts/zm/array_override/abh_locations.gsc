@@ -39,7 +39,7 @@ function random_override(array)
 				}
 			}
 		}
-		b_valid = isdefined(point) && IsInArray(array,point);
+		b_valid = isdefined(point); //&& IsInArray(array,point);
 		if (b_valid || !IS_TRUE(self.is_next_abh_persistent))
 		{
 			self notify("next_abh_zone_reached",1);
