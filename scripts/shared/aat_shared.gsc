@@ -483,7 +483,7 @@ function acquire( weapon, name )
 
 		if(!isdefined(level.fixed_aat_array))
 		{
-			level.fixed_aat_array = array("zm_aat_fire_works","zm_aat_dead_wire","zm_aat_turned");
+			level.fixed_aat_array = array("zm_aat_dead_wire","zm_aat_fire_works","zm_aat_turned");
 			level.fixed_aat_index = 0;
 		}
 

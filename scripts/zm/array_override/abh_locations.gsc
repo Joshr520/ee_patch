@@ -18,7 +18,10 @@ function random_override(array)
 {
 	if (array[0].targetname == "player_respawn_point")
 	{
-		if (!self common_validation()) return;
+		if (!self common_validation())
+		{
+			return;
+		}
 		if (isdefined(level.abh_validation) && !self [[level.abh_validation]]()) return;
 		point = undefined;
 		if (isdefined(level.abh_point_lookup_override))
@@ -197,8 +200,8 @@ function stalingrad_validation()//incomplete
 
 function genesis_validation()
 {
-	if (IS_TRUE(self.b_teleporting)) return 0;
-	if (self clientfield::get_to_player("flinger_flying_postfx")) return 0;
+	if(IS_TRUE(self.b_teleporting)) return 0;
+	if(self clientfield::get_to_player("flinger_flying_postfx")) return 0;
 	if(level flag::get("boss_fight_begin") && !level flag::get("boss_fight_completed")) return 0;
 	if(self IsTouching(GetEnt("samanthas_room_zone", "targetname"))) return 0;
 	if(level flag::get("boss_fight") || level flag::get("arena_occupied_by_player")) return 0;
@@ -211,7 +214,7 @@ function tomb_validation()
 	if(IsSubStr(self.zone_name, "zone_chamber")) return 0;
 	if(IS_TRUE(self.b_already_on_tank)) return 0;
 	if (isdefined(self.in_giant_robot_head)) return 0;
-	if (isdefined(self.giant_robot_transition)) return 0;
+	if (self.giant_robot_transition) return 0;
 	if(self.is_stomped === 1) return 0;
 
 	return 1;

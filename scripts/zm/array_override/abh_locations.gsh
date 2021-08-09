@@ -82,8 +82,8 @@
 "pavlovs_B_zone"					- hatchery by pap
 */
 
-#define STALINGRAD_P0_ABH_ZONES_C array("library_B_zone", "bunker_zone", "pavlovs_B_zone", "start_A_zone", "judicial_A_zone", "department_store_floor2_A_zone", "factory_C_zone", "start_A_zone", "pavlovs_B_zone","judicial_A_zone","start_A_zone")
-#define STALINGRAD_P0_ABH_ZONES_M array("library_B_zone", "bunker_zone", "pavlovs_B_zone", "start_A_zone", "judicial_A_zone", "department_store_floor2_A_zone", "factory_C_zone", "start_A_zone", "pavlovs_B_zone","judicial_A_zone","start_A_zone")
+#define STALINGRAD_P0_ABH_ZONES_C array("pavlovs_B_zone", "bunker_zone", "pavlovs_B_zone", "start_A_zone", "judicial_A_zone", "department_store_floor2_A_zone", "factory_C_zone", "start_A_zone", "pavlovs_B_zone","judicial_A_zone","start_A_zone")
+#define STALINGRAD_P0_ABH_ZONES_M array("pavlovs_B_zone", "bunker_zone", "pavlovs_B_zone", "start_A_zone", "judicial_A_zone", "department_store_floor2_A_zone", "factory_C_zone", "start_A_zone", "pavlovs_B_zone","judicial_A_zone","start_A_zone")
 
 #define STALINGRAD_P1_ABH_ZONES_C array()
 #define STALINGRAD_P1_ABH_ZONES_M array()

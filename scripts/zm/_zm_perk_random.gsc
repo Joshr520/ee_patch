@@ -672,8 +672,10 @@ function include_perk_in_random_rotation(perk)
 */
 function get_weighted_random_perk(player)
 {
-	if (!player hasPerk("specialty_staminup")) return "specialty_staminup";
+	if (!player hasPerk("specialty_fastreload")) return "specialty_fastreload";
 	if (!player hasPerk("specialty_armorvest")) return "specialty_armorvest";
+	if (!player hasPerk("specialty_doubletap2")) return "specialty_doubletap2";
+	if (!player hasPerk("specialty_widowswine")) return "specialty_widowswine";
 	keys = Array::randomize(getArrayKeys(level._random_perk_machine_perk_list));
 	if(isdefined(level.custom_random_perk_weights))
 	{

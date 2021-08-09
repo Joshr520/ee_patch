@@ -96,7 +96,7 @@ function island_spider_rounds()
 	}
 }
 
-#define STALINGRAD_SENTINEL_ARR array(10,17,24,31,38,45)
+#define STALINGRAD_SENTINEL_ARR array(11,20,28,35,42,49)
 
 function stalingrad_sentinel_rounds()
 {

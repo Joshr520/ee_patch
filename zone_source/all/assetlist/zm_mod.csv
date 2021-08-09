@@ -1,12 +1,13 @@
-rawfile,ui/uieditor/menus/hud/t7hud_zm_ee_patch.lua
-rawfile,ui/uieditor/widgets/hud/zm_ee_patch/zombiecounter.lua
 scriptparsetree,scripts/shared/aat_shared.csc
 scriptparsetree,scripts/shared/aat_shared.gsc
 scriptparsetree,scripts/shared/aat_shared.gsh
 scriptparsetree,scripts/shared/array_shared.csc
 scriptparsetree,scripts/shared/array_shared.gsc
+scriptparsetree,scripts/zm/_conditions.gsc
+scriptparsetree,scripts/zm/_conditions.gsh
 scriptparsetree,scripts/zm/_load.csc
 scriptparsetree,scripts/zm/_load.gsc
+scriptparsetree,scripts/zm/_system_identifiers.gsh
 scriptparsetree,scripts/zm/_zm_magicbox.csc
 scriptparsetree,scripts/zm/_zm_magicbox.gsc
 scriptparsetree,scripts/zm/_zm_perk_random.gsc
@@ -64,6 +65,7 @@ scriptparsetree,scripts/zm/script_override/bgb_machine_override.gsc
 scriptparsetree,scripts/zm/script_override/craftable_locations.gsc
 scriptparsetree,scripts/zm/script_override/fixed_random_perks.gsc
 scriptparsetree,scripts/zm/script_override/forced_drops.gsc
+scriptparsetree,scripts/zm/script_override/forced_drops.gsh
 scriptparsetree,scripts/zm/script_override/tomb/fixed_crypt_discs.gsc
 scriptparsetree,scripts/zm/script_override/tomb/fixed_zombie_blood.gsc
 scriptparsetree,scripts/zm/variable_override/fixed_meatball_count.gsc

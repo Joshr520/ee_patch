@@ -335,39 +335,8 @@ function randomize_powerups()
 //
 function get_next_powerup()
 {
-	if (!level.forced_first_drop[level.force_drop_index])
-	{
-		temp = "";
-		for (i = level.zombie_powerup_index; i < level.zombie_powerup_array.size; i++)
-		{
-			if (level.zombie_powerup_array[i] == level.forced_drops[level.force_drop_index][0])
-			{
-				if (i != level.zombie_powerup_index)
-				{
-					if (![[level.zombie_powerups[level.zombie_powerup_array[level.zombie_powerup_index]].func_should_drop_with_regular_powerups]]())
-						break;
-					temp = level.zombie_powerup_array[level.zombie_powerup_index];
-					level.zombie_powerup_array[level.zombie_powerup_index] = level.forced_drops[level.force_drop_index][0];
-					level.zombie_powerup_array[i] = temp;
-				}
-				level.forced_first_drop[level.force_drop_index] = true;
-				break;
-			}
-		}
-	}
-	else
-	{
-		if (isdefined(level.forced_drops[level.force_drop_index + 1]) && (level.zombie_powerup_index + 1 < level.zombie_powerup_array.size))
-		{
-			if (level.zombie_powerup_array[level.zombie_powerup_index] == level.forced_drops[level.force_drop_index+1][0])
-			{
-				temp = level.zombie_powerup_array[level.zombie_powerup_index + 1];
-				level.zombie_powerup_array[level.zombie_powerup_index + 1] = level.zombie_powerup_array[level.zombie_powerup_index];
-				level.zombie_powerup_array[level.zombie_powerup_index] = temp;
-			}
-		}
-	}
 	powerup = level.zombie_powerup_array[ level.zombie_powerup_index ];
+
 	level.zombie_powerup_index++;
 	if( level.zombie_powerup_index >= level.zombie_powerup_array.size )
 	{
@@ -403,7 +372,7 @@ function get_valid_powerup()
 		return powerup;
 	}
 
-
+	if (isdefined(level.next_powerup_override)) [[level.next_powerup_override]]();
 	powerup = get_next_powerup();
 	while( 1 )
 	{
@@ -613,24 +582,10 @@ function powerup_round_start()
 {
 	level.powerup_drop_count = 0;
 }
+#insert scripts\zm\_system_identifiers.gsh;
 
 function powerup_drop(drop_point)
 {
-	DEFAULT(level.forced_first_drop,array());
-	DEFAULT(level.force_drop_index,0);
-	DEFAULT(level.forced_first_drop[level.force_drop_index],false);
-	DEFAULT(level.no_force,false);
-
-	if (level.forced_drops[level.force_drop_index + 1][2] && level.forced_first_drop[level.force_drop_index] && level.round_number >= level.forced_drops[level.force_drop_index + 1][1] && !level.no_force)
-	{
-		level.force_drop_index++;
-		if (level.force_drop_index >= level.forced_drops.size) 
-		{
-			level.no_force = true;
-			level.forced_first_drop[level.force_drop_index] = true;
-		}
-	}
-
 	if( isdefined( level.custom_zombie_powerup_drop ) )
 	{
 		b_outcome = [[ level.custom_zombie_powerup_drop ]]( drop_point );
@@ -640,6 +595,7 @@ function powerup_drop(drop_point)
 			return;	
 		}
 	}
+	
 	if( level.powerup_drop_count >= level.zombie_vars["zombie_powerup_drop_max_per_round"] )
 	{
 		return;
@@ -652,22 +608,35 @@ function powerup_drop(drop_point)
 	
 	// some guys randomly drop, but most of the time they check for the drop flag
 	rand_drop = randomint(100);
+
+	level.force_drop = undefined;
+
+	if (isdefined(level.fixed_powerup_array) && isdefined(level.fixed_powerup_array[level.fixed_powerup_index]))
+	{
+		if (level.fixed_powerup_array[level.fixed_powerup_index].desired_round > level.round_number) level.force_drop = 0;
+		else {foreach (f in level.fixed_powerup_array[level.fixed_powerup_index].condition_function_array)
+		{
+			if (![[f.func]](f.arg, ZM_POWERUPS, drop_point))
+			{
+				level.force_drop = 0;
+				break;
+			}
+		}}
+		DEFAULT(level.force_drop,1);
+	}
+
+	if (IS_TRUE(level.force_drop)) rand_drop = 0;
+	else if (level.force_drop === 0) rand_drop = 3;
+	
 	if( bgb::is_team_enabled( "zm_bgb_power_vacuum" ) && rand_drop < 20 )
 	{	
 		debug = "zm_bgb_power_vacuum";
 	}
 	else if (rand_drop > 2)
 	{
-		if ( !level.zombie_vars["zombie_drop_item"] && level.forced_first_drop[level.force_drop_index] )
+		if (!level.zombie_vars["zombie_drop_item"])
 		{
 			return;
-		}
-		if ( !level.forced_first_drop[level.force_drop_index])
-		{
-			if (![[level.forced_drop_functions[level.force_drop_index].func]](level.forced_drop_functions[level.force_drop_index].arg))
-			{
-				return;
-			}
 		}
 		debug = "score";
 	}
@@ -716,7 +685,7 @@ function powerup_drop(drop_point)
 		return;
 	}
 
-	powerup powerup_setup();
+	powerup powerup_setup( );
 
 	print_powerup_drop( powerup.powerup_name, debug );
 	powerup thread powerup_timeout();

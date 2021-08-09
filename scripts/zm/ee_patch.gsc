@@ -147,7 +147,7 @@ function script_override()
 	thread fixed_random_perks::init();
 	thread fixed_crypt_discs::init();
 	thread fixed_zombie_blood::init();
-	forced_drops::init();
+	forced_drops::main();
 	craftable_locations::init();
 
 	// free first bgb even offline

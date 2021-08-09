@@ -28,6 +28,10 @@ scriptparsetree,scripts/zm/craftables/_zm_craftables.csc
 
 scriptparsetree,scripts/zm/zm_tomb_giant_robot.gsc
 
+scriptparsetree,scripts/zm/_conditions.gsc
+scriptparsetree,scripts/zm/_conditions.gsh
+scriptparsetree,scripts/zm/_system_identifiers.gsh
+
 //main scripts
 scriptparsetree,scripts/zm/ee_patch.gsc
 
@@ -87,6 +91,7 @@ scriptparsetree,scripts/zm/array_override/zod/zod_craftable_locations.gsc
 
 scriptparsetree,scripts/zm/script_override/fixed_random_perks.gsc
 scriptparsetree,scripts/zm/script_override/forced_drops.gsc
+scriptparsetree,scripts/zm/script_override/forced_drops.gsh
 scriptparsetree,scripts/zm/script_override/craftable_locations.gsc
 scriptparsetree,scripts/zm/script_override/bgb_machine_override.gsc
 scriptparsetree,scripts/zm/script_override/tomb/fixed_crypt_discs.gsc
@@ -123,6 +128,6 @@ scriptparsetree,scripts/zm/hud/rocket_test_timer.gsc
 
 // UI
 
-rawfile,ui/uieditor/menus/hud/t7hud_zm_ee_patch.lua
-rawfile,ui/uieditor/widgets/hud/zm_ee_patch/zombiecounter.lua
+//rawfile,ui/uieditor/menus/hud/t7hud_zm_ee_patch.lua
+//rawfile,ui/uieditor/widgets/hud/zm_ee_patch/zombiecounter.lua
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
