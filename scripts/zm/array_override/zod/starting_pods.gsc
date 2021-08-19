@@ -1,30 +1,28 @@
-#using scripts\shared\array_shared;
-#using scripts\zm\array_override\array_override_common;
 
+#using scripts\shared\array_shared;
+
+#using scripts\zm\array_override\array_override_common;
 #insert scripts\zm\array_override\array_override_common.gsh;
 
 #namespace zod_starting_pods;
 
 #define SYSTEM_NAME "starting_pods"
-function init()
-{
-	if (GetDvarString("mapname") == "zm_zod")
-	{
-		REGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOMIZE,&randomize_override);
-		thread main();
-	}
-}
 
-function randomize_override(array)
+// specifying which zones to spawn pods in is precise enough
+#define DESIRED_ZONES array("zone_start")
+
+function private randomize_override(array)
 {
-	if (array[0].targetname == "fungus_pod")
+	IF_TARGETNAME_MATCH("fungus_pod",array[0])
 	{
+		a_desired_zones = DESIRED_ZONES;
+		i = 0;
 		foreach (index,pod in array)
 		{
-			if (pod.zone == "zone_start")
+			if (IsInArray(a_desired_zones,pod.zone))
 			{
-				array::swap( array, index , array.size - 1 );
-				break;
+				i++;
+				array::swap( array, index , array.size - i );
 			}
 		}
 		level notify("fixed_pods");
@@ -34,9 +32,8 @@ function randomize_override(array)
 
 function main()
 {
+	CALL_ONCE_FLAG(init_fixed_starting_pods)
+	REGISTER_OVERRIDE_EX_NOTIF(SYSTEM_NAME,ARRAY_RANDOMIZE,&randomize_override);
 	level waittill("fixed_pods");
-
-	wait .05;
-
-	UNREGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOMIZE);
+	UNREGISTER_OVERRIDE_EX_NOTIF(SYSTEM_NAME,ARRAY_RANDOMIZE);
 }

@@ -27,6 +27,8 @@ scriptparsetree,scripts/zm/craftables/_zm_craftables.gsc
 scriptparsetree,scripts/zm/craftables/_zm_craftables.csc
 
 scriptparsetree,scripts/zm/zm_tomb_giant_robot.gsc
+scriptparsetree,scripts/zm/zm_tomb_dig.gsc
+scriptparsetree,scripts/zm/zm_tomb_capture_zones.gsc
 
 scriptparsetree,scripts/zm/_conditions.gsc
 scriptparsetree,scripts/zm/_conditions.gsh
@@ -82,7 +84,6 @@ scriptparsetree,scripts/zm/array_override/stalingrad/stalingrad_challenges.gsc
 
 scriptparsetree,scripts/zm/array_override/tomb/templar_target.gsc
 scriptparsetree,scripts/zm/array_override/tomb/fixed_ice_tiles.gsc
-scriptparsetree,scripts/zm/array_override/tomb/fixed_digsites.gsc
 
 scriptparsetree,scripts/zm/array_override/zod/starting_pods.gsc
 scriptparsetree,scripts/zm/array_override/zod/zod_craftable_locations.gsc

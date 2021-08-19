@@ -193,11 +193,11 @@ function robot_cycling() //Want to improve so its less hardcode and more depende
 	//Perfect wind
 	order[0] = 1; //  0:40   thor
 	order[1] = 2; //  2:40   freya
-	order[2] = 1; //  4:40   thor -> want 7 cycle odin. This gets replaced by round 4 trios if trios isn't skipped
-	order[3] = 0; //  6:40   odin
+	order[2] = 0; //  4:40   odin
+	order[3] = 1; //  6:40   thor
 
 	//Random cycling since wind parts should be collected
-	order[4] = 1;  //  8:40    
+	order[4] = 0;  //  8:40    
 	order[5] = 2;  //  10:40   
 	order[6] = 1;  //  12:40   
 	order[7] = 2;  //  14:40   
@@ -254,7 +254,11 @@ function robot_cycling() //Want to improve so its less hardcode and more depende
 			//random_number = RandomInt(3);
 
 			//If user is doing gstrike 2 on 16, then we want Thor to be the trios robot. Otherwise, spawn Odin
-			if (level.n_ee_robot_staffs_planted == 3) {
+			if (level.round_number == 12) {
+				random_number = 2;
+			} else if (level.round_number == 4) {
+				random_number = 2;
+			} else if (level.n_ee_robot_staffs_planted == 3) {
 				random_number = 1;
 			} else {
 				random_number = 0;
@@ -405,7 +409,8 @@ function giant_robot_start_walk(n_robot_id, b_has_hatch)
 		//Want gen 6 freya (right foot) for the second cycle and left foot for everything else during the run
 		if (n_robot_id == 2 && level.round_number < 10) {
 			ai.hatch_foot = "right";
-		} else {
+		} 
+		else {
 			ai.hatch_foot = "left";
 		}
 	

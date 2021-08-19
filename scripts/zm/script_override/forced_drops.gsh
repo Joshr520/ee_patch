@@ -12,13 +12,7 @@
 #define ZOD_FORCED_DROP_6 array("nuke",4,true,array(DROP_INSIDE("zone_theater_burlesque")))
 #define ZOD_FORCED_DROP_7 array("double_points",5,true,array(DROP_INSIDE("zone_slums_high_B")))
 
-#define TOMB_FORCED_DROP_0 array("nuke",1,true,array(NUM_ZOMBIES_LEFT(1)))
-#define TOMB_FORCED_DROP_1 array("insta_kill",3,true,array(DROP_INSIDE("zone_bunker_3a")))
-#define TOMB_FORCED_DROP_2 array("double_points",3,true)
-#define TOMB_FORCED_DROP_3 array("zombie_blood",3,true)
-#define TOMB_FORCED_DROP_4 array("full_ammo",3,true)
-#define TOMB_FORCED_DROP_5 array("nuke",4,true,array(NUM_STAFF_PARTS("elemental_staff_air",2)))
-#define TOMB_FORCED_DROP_6 array("double_points",5,true)
+#define TOMB_FORCED_DROP_0 array("insta_kill",5,true,array(NUM_ZOMBIES_LEFT(22)))
 //#define TOMB_FORCED_DROP_7 array("nuke",9,false,array(NUM_ZOMBIES_LEFT(1)))
 
 // the complete list of all predetermined drops for the _zm_powerups script to use
@@ -35,7 +29,7 @@
 #define COSMODROME array()
 #define TEMPLE array()
 #define MOON array()
-#define TOMB array(TOMB_FORCED_DROP_0,TOMB_FORCED_DROP_1,TOMB_FORCED_DROP_2,TOMB_FORCED_DROP_3,TOMB_FORCED_DROP_4,TOMB_FORCED_DROP_5,TOMB_FORCED_DROP_6)
+#define TOMB array(TOMB_FORCED_DROP_0)
 
 // index definitions for this script to use
 #define DROP_NAME_INDEX 0

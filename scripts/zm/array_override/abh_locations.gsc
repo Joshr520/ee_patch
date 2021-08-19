@@ -18,14 +18,21 @@ function random_override(array)
 {
 	if (array[0].targetname == "player_respawn_point")
 	{
+		//IPrintLnBold("Starting ABH");
 		if (!self common_validation())
 		{
+			//IPrintLnBold("ABH Failed - Swapping Weapons");
 			return;
 		}
-		if (isdefined(level.abh_validation) && !self [[level.abh_validation]]()) return;
+		if (isdefined(level.abh_validation) && !self [[level.abh_validation]]())
+		{
+			//IPrintLnBold("Map Specific ABH Verification Failed");
+			return;
+		}
 		point = undefined;
 		if (isdefined(level.abh_point_lookup_override))
 		{
+			//IPrintLnBold("Picking ABH From Origins");
 			point = [[level.abh_point_lookup_override]](self.next_abh);
 		}
 		if (!isdefined(point))
@@ -43,11 +50,15 @@ function random_override(array)
 			}
 		}
 		b_valid = isdefined(point); //&& IsInArray(array,point);
+		if (!level.zones[self.next_abh].is_enabled) b_valid = false;
+		//IPrintLnBold(b_valid);
 		if (b_valid || !IS_TRUE(self.is_next_abh_persistent))
 		{
+			//IPrintLnBold("ABH Found: " + self.next_abh);
 			self notify("next_abh_zone_reached",1);
 			if (b_valid) return point;
 		}
+		//IPrintLnBold("ABH Invalid");
 	}
 }
 
@@ -128,7 +139,7 @@ function monitor_abh()
 		self waittill("next_abh_zone_reached",b_increment);
 		if (b_increment)
 		{
-			wait 2;
+			wait 4;
 			self.abh_index++;
 		}
 	}
@@ -211,11 +222,26 @@ function genesis_validation()
 
 function tomb_validation()
 {
-	if(IsSubStr(self.zone_name, "zone_chamber")) return 0;
-	if(IS_TRUE(self.b_already_on_tank)) return 0;
-	if (isdefined(self.in_giant_robot_head)) return 0;
-	if (self.giant_robot_transition) return 0;
-	if(self.is_stomped === 1) return 0;
+	if(IsSubStr(self.zone_name, "zone_chamber")) 
+	{
+		//IPrintLnBold("Failed - Player in crazy place");
+		return 0;
+	}
+	if(IS_TRUE(self.b_already_on_tank))
+	{
+		//IPrintLnBold("Failed - Player on tank");
+		return 0;
+	}
+	if(isdefined(self.in_giant_robot_head))
+	{
+		//IPrintLnBold("Failed - Player in robot");
+		return 0;
+	}
+	if(self.is_stomped === 1)
+	{
+		//IPrintLnBold("Failed - Player stomped");
+		return 0;
+	}
 
 	return 1;
 }

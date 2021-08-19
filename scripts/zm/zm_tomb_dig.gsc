@@ -20,6 +20,8 @@
 #using scripts\zm\zm_tomb_main_quest;
 #using scripts\zm\zm_tomb_utility;
 
+#insert scripts\shared\shared.gsh;
+
 #namespace zm_tomb_dig;
 
 /*
@@ -148,7 +150,7 @@ function shovel_prompt_update(e_player)
 		return 0;
 	}
 	self.hint_string = &"ZM_TOMB_SHPU";
-	if(isdefined(e_player.dig_vars["has_shovel"]) && e_player.dig_vars["has_shovel"])
+	if(IS_TRUE(e_player.dig_vars["has_shovel"]))
 	{
 		self.hint_string = &"ZM_TOMB_SHAG";
 	}
@@ -202,7 +204,7 @@ function shovel_unitrigger_think()
 		{
 			continue;
 		}
-		if(!(isdefined(e_player.dig_vars["has_shovel"]) && e_player.dig_vars["has_shovel"]))
+		if(!(IS_TRUE(e_player.dig_vars["has_shovel"])))
 		{
 			e_player.dig_vars["has_shovel"] = 1;
 			e_player playsound("zmb_craftable_pickup");
@@ -227,7 +229,7 @@ function shovel_unitrigger_think()
 */
 function dig_reward_dialog(str_category)
 {
-	if(!(isdefined(self.dig_vo_cooldown) && self.dig_vo_cooldown))
+	if(!(IS_TRUE(self.dig_vo_cooldown)))
 	{
 		self zm_utility::do_player_general_vox("digging", str_category);
 	}
@@ -314,14 +316,15 @@ function dig_spots_init()
 		{
 			s_dig_spot.angles = (0, 0, 0);
 		}
-		if(isdefined(s_dig_spot.script_noteworthy) && s_dig_spot.script_noteworthy == "initial_spot")
+		/*if(isdefined(s_dig_spot.script_noteworthy) && s_dig_spot.script_noteworthy == "initial_spot")
 		{
 			s_dig_spot thread dig_spot_spawn();
 		}
 		else
 		{
 			s_dig_spot.dug = 1;
-		}
+		}*/
+		s_dig_spot thread dig_spot_spawn();
 		s_dig_spot.str_zone = zm_zonemgr::get_zone_from_position(s_dig_spot.origin + VectorScale((0, 0, 1), 32), 1);
 		if(!isdefined(s_dig_spot.str_zone))
 		{
@@ -369,7 +372,7 @@ function dig_spots_respawn(a_dig_spots)
 		}
 		for(i = 0; i < a_dig_spots.size; i++)
 		{
-			if(isdefined(a_dig_spots[i].dug) && a_dig_spots[i].dug && n_respawned < n_respawned_max && level.n_dig_spots_cur <= level.n_dig_spots_max)
+			if(IS_TRUE(a_dig_spots[i].dug) && n_respawned < n_respawned_max && level.n_dig_spots_cur <= level.n_dig_spots_max)
 			{
 				a_dig_spots[i].dug = undefined;
 				a_dig_spots[i] thread dig_spot_spawn();
@@ -387,7 +390,7 @@ function dig_spots_respawn(a_dig_spots)
 				{
 					if(isdefined(s_dig_spot.str_zone) && IsSubStr(s_dig_spot.str_zone, s_staff.zone_substr))
 					{
-						if(!(isdefined(s_dig_spot.dug) && s_dig_spot.dug))
+						if(!(IS_TRUE(s_dig_spot.dug)))
 						{
 							n_active_mounds++;
 							continue;
@@ -447,7 +450,7 @@ function dig_spot_spawn()
 */
 function dig_spot_trigger_visibility(player)
 {
-	if(isdefined(player.dig_vars["has_shovel"]) && player.dig_vars["has_shovel"])
+	if(IS_TRUE(player.dig_vars["has_shovel"]))
 	{
 		self setHintString(&"ZM_TOMB_X2D");
 	}
@@ -472,7 +475,7 @@ function waittill_dug(s_dig_spot)
 	while(1)
 	{
 		self waittill("trigger", player);
-		if(isdefined(player.dig_vars["has_shovel"]) && player.dig_vars["has_shovel"])
+		if(IS_TRUE(player.dig_vars["has_shovel"]))
 		{
 			player playsound("evt_dig");
 			s_dig_spot.dug = 1;
@@ -509,7 +512,8 @@ function waittill_dug(s_dig_spot)
 					}
 					n_good_chance = 70;
 				}
-				n_prize_roll = RandomInt(100);
+				//n_prize_roll = RandomInt(100);
+				n_prize_roll = 0;
 				if(n_prize_roll > n_good_chance)
 				{
 					if(math::cointoss())
@@ -524,7 +528,11 @@ function waittill_dug(s_dig_spot)
 					}
 					player.dig_vars["n_losing_streak"]++;
 				}
-				else if(math::cointoss())
+				else
+				{
+					self thread dig_up_powerup(player);
+				}
+				/*else if(math::cointoss())
 				{
 					self thread dig_up_powerup(player);
 				}
@@ -532,7 +540,7 @@ function waittill_dug(s_dig_spot)
 				{
 					player dig_reward_dialog("dig_gun");
 					self thread dig_up_weapon(player);
-				}
+				}*/
 			}
 			if(!player.dig_vars["has_upgraded_shovel"])
 			{
@@ -594,7 +602,11 @@ function dig_up_powerup(player)
 	powerup endon("powerup_grabbed");
 	powerup endon("powerup_timedout");
 	a_rare_powerups = dig_get_rare_powerups(player);
-	powerup_item = undefined;
+	powerup_item = "bonus_points_player";
+	
+	player dig_reward_dialog("dig_cash");
+	level.dig_last_prize_rare = 0;
+	/*powerup_item = undefined;
 	if(level.dig_n_powerups_spawned + level.powerup_drop_count > 4 || level.dig_last_prize_rare || a_rare_powerups.size == 0 || RandomInt(100) < 80)
 	{
 		if(level.dig_n_zombie_bloods_spawned < 1 && RandomInt(100) > 70)
@@ -608,7 +620,7 @@ function dig_up_powerup(player)
 			player dig_reward_dialog("dig_cash");
 		}
 		level.dig_last_prize_rare = 0;
-	}
+	}*
 	else
 	{
 		powerup_item = a_rare_powerups[RandomInt(a_rare_powerups.size)];
@@ -616,7 +628,7 @@ function dig_up_powerup(player)
 		level.dig_n_powerups_spawned++;
 		player dig_reward_dialog("dig_powerup");
 		dig_set_powerup_spawned(powerup_item);
-	}
+	}*/
 	powerup zm_powerups::powerup_setup(powerup_item);
 	powerup MoveZ(40, 0.6);
 	powerup waittill("movedone");
@@ -788,7 +800,7 @@ function function_3674f451(player)
 function swap_weapon(var_375664a9, e_player)
 {
 	var_1bcd223d = e_player GetCurrentWeapon();
-	if(!zombie_utility::is_player_valid(e_player) || (isdefined(e_player.IS_DRINKING) && e_player.IS_DRINKING) || zm_utility::is_placeable_mine(var_1bcd223d) || zm_equipment::is_equipment(var_1bcd223d) || var_1bcd223d == GetWeapon("none") || e_player zm_equipment::hacker_active())
+	if(!zombie_utility::is_player_valid(e_player) || (IS_TRUE(e_player.IS_DRINKING)) || zm_utility::is_placeable_mine(var_1bcd223d) || zm_equipment::is_equipment(var_1bcd223d) || var_1bcd223d == GetWeapon("none") || e_player zm_equipment::hacker_active())
 	{
 		return;
 	}
@@ -993,7 +1005,7 @@ function waittill_zombie_blood_dug(s_dig_spot)
 	while(1)
 	{
 		self waittill("trigger", player);
-		if(isdefined(player.dig_vars["has_shovel"]) && player.dig_vars["has_shovel"])
+		if(IS_TRUE(player.dig_vars["has_shovel"]))
 		{
 			player.t_zombie_blood_dig.origin = (0, 0, 0);
 			player playsound("evt_dig");
@@ -1070,7 +1082,8 @@ function rotate_perk_upgrade_bottle()
 */
 function bonus_points_powerup_override()
 {
-	points = randomIntRange(1, 6) * 50;
+	//points = randomIntRange(1, 6) * 50;
+	points = 250;
 	return points;
 }
 
@@ -1094,7 +1107,7 @@ function dig_powerups_tracking()
 	while(1)
 	{
 		level waittill("end_of_round");
-		foreach(value in level.dig_powerups_tracking)
+		foreach(str_powerup, value in level.dig_powerups_tracking)
 		{
 			level.dig_powerups_tracking[str_powerup] = 0;
 		}

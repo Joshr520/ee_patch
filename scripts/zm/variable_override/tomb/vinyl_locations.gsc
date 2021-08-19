@@ -36,13 +36,13 @@ function init()
 #define GEN6_TABLET 1
 #define GEN6_TANK 2
 
-#define VINYL_FIRE GEN6_BOXES
+#define VINYL_FIRE GEN6_TABLET
 
 #define NML_TRENCHES 0
 #define NML_MOUND 1
 #define NML_CHURCH 2
 
-#define VINYL_MASTER NML_MOUND
+#define VINYL_MASTER NML_CHURCH
 
 #define UNDER_FAR 0
 #define UNDER_CLOSE 1

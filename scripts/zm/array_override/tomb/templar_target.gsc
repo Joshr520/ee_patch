@@ -17,7 +17,7 @@
 #define GEN_6 5
 */
 
-#define TEMPLAR_TARGETS array(3)
+#define TEMPLAR_TARGETS array(4,1,5)
 
 #define SYSTEM_NAME "templar_target"
 function init()

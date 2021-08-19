@@ -9,7 +9,7 @@
 
 #namespace zm_hud_ee_patch;
 
-#precache( "lui_menu", "T7Hud_zm_ee_patch" );
+//#precache( "lui_menu", "T7Hud_zm_ee_patch" );
 
 function init()
 {

@@ -1,21 +1,12 @@
-#using scripts\codescripts\struct;
-#using scripts\shared\array_shared;
-#using scripts\shared\flag_shared;
-#using scripts\zm\array_override\array_override_common;
 
+#using scripts\shared\array_shared;
+
+#using scripts\zm\array_override\array_override_common;
 #insert scripts\zm\array_override\array_override_common.gsh;
 
 #namespace zod_craftable_locations;
 
 #define SYSTEM_NAME "zod_parts"
-function init()
-{
-	if (GetDvarString("mapname") == "zm_zod")
-	{
-		REGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOMIZE,&randomize_override);
-		thread main();
-	}
-}
 
 //pod sprayer indexes
 #define SPAWN_BEAST 0
@@ -39,24 +30,14 @@ function init()
 #define SPRAYERS array(SPAWN_SPRAYER,JUNCTION_SPRAYER,CANAL_SPRAYER,SLUMS_SPRAYER)
 
 
-function randomize_override(array)
+function private randomize_override(array)
 {
-	if (array[0].targetname == "pod_sprayer_location")
+	IF_TARGETNAME_MATCH("pod_sprayer_location",array[0])
 	{
-		a_ret = array;
-		sprayers = SPRAYERS;
-		for (i = 0; i < sprayers.size; i++)
+		a_sprayers = SPRAYERS;
+		for (i = 0; i < a_sprayers.size; i++)
 		{
-			index = sprayers[i];
-			int = array[index].script_int;
-			for (j = 0; j < int; j++)
-			{
-				if (array[j].script_int == int)
-				{
-					array::swap(array,j,index);
-					break;
-				}
-			}
+			array::swap(array,i, a_sprayers[i]);
 		}
 		level notify("fixed_pod_sprayers");
 		return array;
@@ -65,9 +46,8 @@ function randomize_override(array)
 
 function main()
 {
+	CALL_ONCE_FLAG(init_fixed_pod_sprayers)
+	REGISTER_OVERRIDE_EX_NOTIF(SYSTEM_NAME,ARRAY_RANDOMIZE,&randomize_override);
 	level waittill("fixed_pod_sprayers");
-
-	wait .05;
-
-	UNREGISTER_OVERRIDE(SYSTEM_NAME,ARRAY_RANDOMIZE);
+	UNREGISTER_OVERRIDE_EX_NOTIF(SYSTEM_NAME,ARRAY_RANDOMIZE);
 }

@@ -43,7 +43,6 @@
 
 #using scripts\zm\array_override\tomb\templar_target;
 #using scripts\zm\array_override\tomb\fixed_ice_tiles;
-#using scripts\zm\array_override\tomb\fixed_digsites;
 
 #using scripts\zm\script_override\craftable_locations;
 #using scripts\zm\script_override\fixed_random_perks;
@@ -80,6 +79,7 @@ function start()
 {
 	//thread bot_testing::bot();
 	//thread debug();
+	//thread genesis_debug();
 	//thread stalingrad_debug();
 	//thread zone_monitor_name();
 	//thread zone_monitor_origin();
@@ -104,8 +104,8 @@ function array_override()
 	fixed_specific_powerups::init();
 
 	// ZOD
-	zod_starting_pods::init();
-	zod_craftable_locations::init();
+	zod_starting_pods::main();
+	zod_craftable_locations::main();
 
 	// CASTLE
 	castle_keeper_route::init();
@@ -138,7 +138,6 @@ function array_override()
 	// TOMB
 	templar_target::init();
 	fixed_ice_tiles::init();
-	fixed_digsites::init();
 }
 
 function script_override()
@@ -239,8 +238,8 @@ function zone_monitor_name()
 function zone_monitor_origin()
 {
 	while(1)
-	
-{		org = GetPlayers()[0].origin;
+	{		
+		org = GetPlayers()[0].origin;
 		str = "( " + org[0] + " , " + org[1] + " , " + org[2] + " )";
 		IPrintLn(str);
 		wait 2.5;
@@ -252,6 +251,18 @@ function debug()
 	level.player_starting_points = 50000;
 
 	level flag::wait_till("initial_blackscreen_passed");
+
+	level flag::wait_till("start_zombie_round_logic");
+
+	foreach(door in GetEntArray("zombie_door", "targetname"))
+	{
+		door notify("trigger", undefined, true);
+	}
+
+	foreach(debris in GetEntArray("zombie_debris", "targetname"))
+	{
+		debris notify("trigger", undefined, true);
+	}
 
 	/*while(1)
 	{
@@ -274,6 +285,61 @@ function stalingrad_debug()
 	level flag::set("ee_cylinder_acquired");
 	level flag::set("key_placement");
 	level flag::set("keys_placed");
+} 
+
+function genesis_debug()
+{
+	level.player_out_of_playable_area_monitor = 0;
+
+	flag::wait_till("initial_blackscreen_passed");
+
+	level flag::clear("spawn_zombies");
+
+	level flag::set("power_on1");
+	level flag::set("power_on2");
+	level flag::set("power_on3");
+	level flag::set("power_on4");
+
+	level flag::wait_till("start_zombie_round_logic");
+
+	foreach(door in GetEntArray("zombie_door", "targetname"))
+	{
+		door notify("trigger", undefined, true);
+	}
+
+	foreach(debris in GetEntArray("zombie_debris", "targetname"))
+	{
+		debris notify("trigger", undefined, true);
+	}
+
+	level flag::set("character_stones_done");
+	level flag::set("shards_done");
+	level flag::set("extraction_ritual");
+	level flag::set("acm_wave_in_progress");
+	level flag::set("acm_done");
+	level flag::set("b_targets_collected");
+	level flag::set("b_target_flesh");
+	level flag::set("b_target_done");
+	level flag::set("got_audio1");
+	level flag::set("got_audio2");
+	level flag::set("got_audio3");
+	level flag::set("placed_audio1");
+	level flag::set("placed_audio2");
+	level flag::set("placed_audio3");
+	level flag::set("phased_sophia_start");
+	level flag::set("sophia_beam_locked");
+	level flag::set("sophia_activated");
+	level flag::set("sophia_at_teleporter");
+	level flag::set("teleporter_on");
+	level flag::set("teleporter_cooldown");
+	level flag::set("book_picked_up");
+	level flag::set("book_placed");
+	level flag::set("rune_circle_on");
+	level flag::set("book_runes_in_progress");
+	level flag::set("book_runes_success");
+	level flag::set("book_runes_failed");
+	level flag::set("boss_rush");
+	level flag::set("grand_tour");
 }
 
 function custom_spawn_detection()
