@@ -104,6 +104,8 @@ scriptparsetree,scripts/zm/variable_override/fixed_special_rounds.gsc
 
 scriptparsetree,scripts/zm/variable_override/zod/idgun_pieces.gsc
 
+scriptparsetree,scripts/zm/variable_override/moon/fixed_gersch_location.gsc
+
 scriptparsetree,scripts/zm/variable_override/tomb/vinyl_locations.gsc
 scriptparsetree,scripts/zm/variable_override/tomb/ice_weather_fix.gsc
 
@@ -125,6 +127,7 @@ scriptparsetree,scripts/zm/hud/zm_hud_ee_patch.gsc
 //scriptparsetree,scripts/zm/hud/enemy_counter.gsc
 //scriptparsetree,scripts/zm/hud/enemy_counter.gsh
 scriptparsetree,scripts/zm/hud/rocket_test_timer.gsc
+scriptparsetree,scripts/zm/hud/moon_pap_timer.gsc
 //scriptparsetree,scripts/zm/hud/bot_testing.gsc
 
 // UI

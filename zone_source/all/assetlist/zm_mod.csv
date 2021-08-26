@@ -56,6 +56,7 @@ scriptparsetree,scripts/zm/craftables/_zm_craftables.gsc
 scriptparsetree,scripts/zm/ee_patch.gsc
 scriptparsetree,scripts/zm/hud/hud_common.gsc
 scriptparsetree,scripts/zm/hud/hud_common.gsh
+scriptparsetree,scripts/zm/hud/moon_pap_timer.gsc
 scriptparsetree,scripts/zm/hud/rocket_test_timer.gsc
 scriptparsetree,scripts/zm/hud/zm_hud_ee_patch.gsc
 scriptparsetree,scripts/zm/hud/zombie_counter.gsc
@@ -70,6 +71,7 @@ scriptparsetree,scripts/zm/script_override/tomb/fixed_zombie_blood.gsc
 scriptparsetree,scripts/zm/variable_override/fixed_meatball_count.gsc
 scriptparsetree,scripts/zm/variable_override/fixed_special_rounds.gsc
 scriptparsetree,scripts/zm/variable_override/island_overrides.gsc
+scriptparsetree,scripts/zm/variable_override/moon/fixed_gersch_location.gsc
 scriptparsetree,scripts/zm/variable_override/stalingrad/stalingrad_overrides.gsc
 scriptparsetree,scripts/zm/variable_override/tomb/ice_weather_fix.gsc
 scriptparsetree,scripts/zm/variable_override/tomb/vinyl_locations.gsc
